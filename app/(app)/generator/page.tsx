@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { createClient as createBrowserClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/browser";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -47,11 +47,7 @@ export default function GeneratorPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!supabaseUrl || !supabaseAnonKey) return;
-
-    const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
+    const supabase = createClient();
     const load = async () => {
       const [storesResult, profilesResult] = await Promise.all([
         supabase

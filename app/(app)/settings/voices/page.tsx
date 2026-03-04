@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/browser";
 import type { StaffVoice, Store } from "@/types/database";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,10 +26,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 function getSupabase() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  return createClient();
 }
 
 type VoiceForm = {

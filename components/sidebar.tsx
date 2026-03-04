@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/browser";
 import { useRouter } from "next/navigation";
 import type { RoleType } from "@/types/database";
 import {
@@ -67,10 +67,7 @@ export function Sidebar({ role, displayName }: SidebarProps) {
   const filteredItems = navItems.filter((item) => item.roles.includes(role));
 
   const handleLogout = async () => {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const supabase = createClient();
     await supabase.auth.signOut();
     router.push("/login");
     router.refresh();
