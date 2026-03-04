@@ -25,10 +25,12 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
 
 type VoiceForm = {
   speaker_name: string;
@@ -89,11 +91,11 @@ export default function SettingsVoicesPage() {
     setError("");
 
     const [voicesResult, storesResult] = await Promise.all([
-      supabase
+      getSupabase()
         .from("staff_voices")
         .select("*")
         .order("created_at", { ascending: false }),
-      supabase.from("stores").select("*").order("store_name", { ascending: true }),
+      getSupabase().from("stores").select("*").order("store_name", { ascending: true }),
     ]);
 
     if (voicesResult.error) {
@@ -128,11 +130,11 @@ export default function SettingsVoicesPage() {
       return orgId;
     }
 
-    const { data: authData } = await supabase.auth.getUser();
+    const { data: authData } = await getSupabase().auth.getUser();
     const userId = authData.user?.id;
 
     if (userId) {
-      const { data: member } = await supabase
+      const { data: member } = await getSupabase()
         .from("organization_members")
         .select("org_id")
         .eq("auth_user_id", userId)
@@ -144,7 +146,7 @@ export default function SettingsVoicesPage() {
       }
     }
 
-    const { data: voiceWithOrg } = await supabase
+    const { data: voiceWithOrg } = await getSupabase()
       .from("staff_voices")
       .select("org_id")
       .limit(1)
@@ -155,7 +157,7 @@ export default function SettingsVoicesPage() {
       return voiceWithOrg.org_id as string;
     }
 
-    const { data: storeWithOrg } = await supabase
+    const { data: storeWithOrg } = await getSupabase()
       .from("stores")
       .select("org_id")
       .limit(1)
@@ -185,7 +187,7 @@ export default function SettingsVoicesPage() {
       return;
     }
 
-    const { error: createError } = await supabase.from("staff_voices").insert({
+    const { error: createError } = await getSupabase().from("staff_voices").insert({
       org_id: targetOrgId,
       store_id: form.store_id,
       speaker_name: form.speaker_name,
@@ -212,7 +214,7 @@ export default function SettingsVoicesPage() {
   ) => {
     setError("");
 
-    const { error: updateError } = await supabase
+    const { error: updateError } = await getSupabase()
       .from("staff_voices")
       .update({
         consent_status: consentStatus,

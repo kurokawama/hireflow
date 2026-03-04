@@ -5,7 +5,6 @@ import { generateContent } from "@/lib/ai/claude";
 import { validateContent } from "@/lib/validators";
 import { generateApplyCode, buildApplyUrl } from "@/lib/apply-code";
 import type { GenerateRequest, GenerateResponse } from "@/types/dto";
-import type { Platform } from "@/types/database";
 
 export async function POST(request: NextRequest) {
   try {

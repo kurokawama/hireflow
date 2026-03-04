@@ -18,10 +18,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
 
 type ProfileForm = {
   profile_name: string;
@@ -73,7 +75,7 @@ export default function SettingsProfilesPage() {
     setLoading(true);
     setError("");
 
-    const { data, error: fetchError } = await supabase
+    const { data, error: fetchError } = await getSupabase()
       .from("profiles")
       .select("*")
       .order("created_at", { ascending: false });
@@ -97,11 +99,11 @@ export default function SettingsProfilesPage() {
       return orgId;
     }
 
-    const { data: authData } = await supabase.auth.getUser();
+    const { data: authData } = await getSupabase().auth.getUser();
     const userId = authData.user?.id;
 
     if (userId) {
-      const { data: member } = await supabase
+      const { data: member } = await getSupabase()
         .from("organization_members")
         .select("org_id")
         .eq("auth_user_id", userId)
@@ -113,7 +115,7 @@ export default function SettingsProfilesPage() {
       }
     }
 
-    const { data: profileWithOrg } = await supabase
+    const { data: profileWithOrg } = await getSupabase()
       .from("profiles")
       .select("org_id")
       .limit(1)
@@ -143,7 +145,7 @@ export default function SettingsProfilesPage() {
       return;
     }
 
-    const { error: createError } = await supabase.from("profiles").insert({
+    const { error: createError } = await getSupabase().from("profiles").insert({
       org_id: targetOrgId,
       profile_name: createForm.profile_name,
       brand_name: createForm.brand_name,
@@ -189,7 +191,7 @@ export default function SettingsProfilesPage() {
     setSaving(true);
     setError("");
 
-    const { error: updateError } = await supabase
+    const { error: updateError } = await getSupabase()
       .from("profiles")
       .update({
         profile_name: editForm.profile_name,

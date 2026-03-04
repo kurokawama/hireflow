@@ -31,10 +31,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
 
 type StoreForm = {
   store_name: string;
@@ -81,7 +83,7 @@ export default function SettingsStoresPage() {
     setLoading(true);
     setError("");
 
-    const { data, error: fetchError } = await supabase
+    const { data, error: fetchError } = await getSupabase()
       .from("stores")
       .select("*")
       .order("created_at", { ascending: false });
@@ -105,11 +107,11 @@ export default function SettingsStoresPage() {
       return orgId;
     }
 
-    const { data: authData } = await supabase.auth.getUser();
+    const { data: authData } = await getSupabase().auth.getUser();
     const userId = authData.user?.id;
 
     if (userId) {
-      const { data: member } = await supabase
+      const { data: member } = await getSupabase()
         .from("organization_members")
         .select("org_id")
         .eq("auth_user_id", userId)
@@ -121,7 +123,7 @@ export default function SettingsStoresPage() {
       }
     }
 
-    const { data: storeWithOrg } = await supabase
+    const { data: storeWithOrg } = await getSupabase()
       .from("stores")
       .select("org_id")
       .limit(1)
@@ -151,7 +153,7 @@ export default function SettingsStoresPage() {
       return;
     }
 
-    const { error: createError } = await supabase.from("stores").insert({
+    const { error: createError } = await getSupabase().from("stores").insert({
       org_id: targetOrgId,
       store_name: createForm.store_name,
       brand: createForm.brand,
@@ -191,7 +193,7 @@ export default function SettingsStoresPage() {
     setSaving(true);
     setError("");
 
-    const { error: updateError } = await supabase
+    const { error: updateError } = await getSupabase()
       .from("stores")
       .update({
         store_name: editForm.store_name,
@@ -220,7 +222,7 @@ export default function SettingsStoresPage() {
     }
 
     setError("");
-    const { error: deleteError } = await supabase
+    const { error: deleteError } = await getSupabase()
       .from("stores")
       .delete()
       .eq("id", storeId);

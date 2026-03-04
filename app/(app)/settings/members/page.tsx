@@ -31,10 +31,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
 
 type MemberForm = {
   display_name: string;
@@ -93,11 +95,11 @@ export default function SettingsMembersPage() {
     setError("");
 
     const [membersResult, storesResult] = await Promise.all([
-      supabase
+      getSupabase()
         .from("organization_members")
         .select("*")
         .order("created_at", { ascending: false }),
-      supabase.from("stores").select("*").order("store_name", { ascending: true }),
+      getSupabase().from("stores").select("*").order("store_name", { ascending: true }),
     ]);
 
     if (membersResult.error) {
@@ -164,7 +166,7 @@ export default function SettingsMembersPage() {
   const handleToggleActive = async (member: OrganizationMember) => {
     setError("");
 
-    const { error: updateError } = await supabase
+    const { error: updateError } = await getSupabase()
       .from("organization_members")
       .update({ is_active: !member.is_active })
       .eq("id", member.id);
