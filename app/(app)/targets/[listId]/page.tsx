@@ -1,12 +1,14 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { getTargetProfiles } from "@/lib/actions/targets";
+import {
+  getTargetList,
+  getTargetProfiles,
+  createTargetProfile,
+} from "@/lib/actions/targets";
 import type {
   CreateTargetProfileRequest,
   PersonaCategory,
-  TargetList,
   TargetProfile,
 } from "@/types/targets";
 import { ProfileCard } from "@/components/targets/profile-card";
@@ -38,36 +40,6 @@ const personaValues: PersonaCategory[] = [
   "potential_applicant",
 ];
 
-function getApiBaseUrl() {
-  const headerStore = headers();
-  const host = headerStore.get("x-forwarded-host") ?? headerStore.get("host");
-  const protocol = headerStore.get("x-forwarded-proto") ?? "http";
-
-  if (!host) {
-    throw new Error("Host header is missing");
-  }
-  return `${protocol}://${host}`;
-}
-
-async function getTargetListByApi(listId: string) {
-  const response = await fetch(`${getApiBaseUrl()}/api/targets/lists/${listId}`, {
-    method: "GET",
-    cache: "no-store",
-  });
-
-  if (response.status === 404) {
-    return null;
-  }
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { error?: string } | null;
-    throw new Error(body?.error ?? "ターゲットリストの取得に失敗しました");
-  }
-
-  const body = (await response.json()) as { data: TargetList };
-  return body.data;
-}
-
 async function createProfileAction(listId: string, formData: FormData) {
   "use server";
 
@@ -95,16 +67,10 @@ async function createProfileAction(listId: string, formData: FormData) {
     source: "manual",
   };
 
-  const response = await fetch(`${getApiBaseUrl()}/api/targets/profiles`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { error?: string } | null;
-    const message = body?.error ?? "プロフィール追加に失敗しました";
-    redirect(`/targets/${listId}?error=${encodeURIComponent(message)}`);
+  try {
+    await createTargetProfile(payload);
+  } catch {
+    redirect(`/targets/${listId}?error=${encodeURIComponent("プロフィール追加に失敗しました")}`);
   }
 
   revalidatePath(`/targets/${listId}`);
@@ -131,7 +97,7 @@ export default async function TargetListDetailPage({
   const statusFilter = searchParams?.status ?? "all";
 
   const [list, profiles] = await Promise.all([
-    getTargetListByApi(listId),
+    getTargetList(listId),
     getTargetProfiles(listId),
   ]);
 

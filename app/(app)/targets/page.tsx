@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { getTargetLists, createTargetList } from "@/lib/actions/targets";
 import type { CreateTargetListRequest, TargetList } from "@/types/targets";
 import { ListCard } from "@/components/targets/list-card";
 import { Button } from "@/components/ui/button";
@@ -22,31 +22,6 @@ type TargetsPageProps = {
     error?: string;
   };
 };
-
-function getApiBaseUrl() {
-  const headerStore = headers();
-  const host = headerStore.get("x-forwarded-host") ?? headerStore.get("host");
-  const protocol = headerStore.get("x-forwarded-proto") ?? "http";
-  if (!host) {
-    throw new Error("Host header is missing");
-  }
-  return `${protocol}://${host}`;
-}
-
-async function getTargetListsByApi() {
-  const response = await fetch(`${getApiBaseUrl()}/api/targets/lists`, {
-    method: "GET",
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { error?: string } | null;
-    throw new Error(body?.error ?? "ターゲットリストの取得に失敗しました");
-  }
-
-  const body = (await response.json()) as { data: TargetList[] };
-  return body.data ?? [];
-}
 
 async function createTargetListAction(formData: FormData) {
   "use server";
@@ -71,16 +46,10 @@ async function createTargetListAction(formData: FormData) {
     platform_filter: platformFilter,
   };
 
-  const response = await fetch(`${getApiBaseUrl()}/api/targets/lists`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { error?: string } | null;
-    const message = body?.error ?? "リスト作成に失敗しました";
-    redirect(`/targets?error=${encodeURIComponent(message)}`);
+  try {
+    await createTargetList(payload);
+  } catch {
+    redirect(`/targets?error=${encodeURIComponent("リスト作成に失敗しました")}`);
   }
 
   revalidatePath("/targets");
@@ -107,7 +76,7 @@ export default async function TargetsPage({ searchParams }: TargetsPageProps) {
   let loadError = "";
 
   try {
-    lists = await getTargetListsByApi();
+    lists = await getTargetLists();
   } catch (error) {
     loadError =
       error instanceof Error ? error.message : "ターゲットリストの取得に失敗しました";
