@@ -22,7 +22,7 @@ const calendarStatusLabel: Record<ContentCalendar["status"], string> = {
 };
 
 const calendarStatusClass: Record<ContentCalendar["status"], string> = {
-  draft: "bg-neutral-100 text-neutral-700 border-transparent",
+  draft: "bg-neutral-100 text-muted-foreground border-transparent",
   approved: "bg-blue-100 text-blue-800 border-transparent",
   in_progress: "bg-yellow-100 text-yellow-800 border-transparent",
   completed: "bg-green-100 text-green-800 border-transparent",
@@ -43,13 +43,13 @@ export default async function StrategyDetailPage({ params }: StrategyDetailPageP
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-neutral-900">コンテンツ戦略</h1>
+          <h1 className="text-2xl font-bold text-foreground">コンテンツ戦略</h1>
           <Button asChild variant="outline">
             <Link href="/strategy">一覧に戻る</Link>
           </Button>
         </div>
         <Card className="rounded-md shadow-sm">
-          <CardContent className="pt-6 text-sm text-neutral-600">
+          <CardContent className="pt-6 text-sm text-muted-foreground">
             カレンダーが見つかりませんでした。
           </CardContent>
         </Card>
@@ -63,8 +63,8 @@ export default async function StrategyDetailPage({ params }: StrategyDetailPageP
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-neutral-900">コンテンツ戦略</h1>
-          <p className="text-sm text-neutral-600">
+          <h1 className="text-2xl font-bold text-foreground">コンテンツ戦略</h1>
+          <p className="text-sm text-muted-foreground">
             週開始日: {formatDate(calendar.week_start)} / ターゲットリスト:{" "}
             {calendar.target_list_id
               ? listNameMap.get(calendar.target_list_id) || "-"
@@ -86,7 +86,7 @@ export default async function StrategyDetailPage({ params }: StrategyDetailPageP
           <CardTitle>戦略概要</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="whitespace-pre-wrap text-sm leading-6 text-neutral-700">
+          <p className="whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
             {calendar.strategy_text || "戦略テキストはありません。"}
           </p>
         </CardContent>
@@ -112,7 +112,7 @@ export default async function StrategyDetailPage({ params }: StrategyDetailPageP
         </CardHeader>
         <CardContent>
           {tasks.length === 0 ? (
-            <p className="text-sm text-neutral-600">タスクはまだありません。</p>
+            <p className="text-sm text-muted-foreground">タスクはまだありません。</p>
           ) : (
             <div className="space-y-3">
               {tasks.map((task) => (

@@ -21,7 +21,7 @@ const contentTypeLabel: Record<CalendarEntry["content_type"], string> = {
 };
 
 const contentTypeClass: Record<CalendarEntry["content_type"], string> = {
-  text: "bg-neutral-100 text-neutral-700 border-transparent",
+  text: "bg-muted text-muted-foreground border-transparent",
   image: "bg-blue-100 text-blue-800 border-transparent",
   video_script: "bg-purple-100 text-purple-800 border-transparent",
 };
@@ -88,27 +88,27 @@ export function CalendarView({ entries }: CalendarViewProps) {
 
   return (
     <section className="space-y-3" aria-label="週間カレンダー">
-      <div className="rounded-md border bg-white p-3 sm:p-4">
+      <div className="rounded-md border bg-card p-3 sm:p-4">
         <div className="space-y-3 md:hidden">
           {weekDays.map((day, index) => {
             const dayKey = toDateOnlyKey(day.toISOString());
             const dayEntries = grouped[dayKey] || [];
             return (
-              <div key={dayKey} className="rounded-md border bg-[#FAFAFA] p-3">
-                <p className="mb-2 text-sm font-semibold text-neutral-900">
+              <div key={dayKey} className="rounded-md border bg-muted/50 p-3">
+                <p className="mb-2 text-sm font-semibold text-foreground">
                   {weekdayLabel[index]} {day.toLocaleDateString("ja-JP", { month: "numeric", day: "numeric" })}
                 </p>
                 {dayEntries.length === 0 ? (
-                  <p className="text-xs text-neutral-500">投稿予定なし</p>
+                  <p className="text-xs text-muted-foreground">投稿予定なし</p>
                 ) : (
                   <div className="space-y-2">
                     {dayEntries.map((entry, entryIndex) => {
                       const Icon = getPlatformIcon(entry.platform);
                       return (
-                        <div key={`${dayKey}-${entry.platform}-${entryIndex}`} className="rounded-md border bg-white p-2">
+                        <div key={`${dayKey}-${entry.platform}-${entryIndex}`} className="rounded-md border bg-card p-2">
                           <div className="flex items-center gap-2 text-sm">
-                            <Icon className="h-4 w-4 text-[#1D3557]" />
-                            <span className="font-medium text-neutral-900">{entry.topic}</span>
+                            <Icon className="h-4 w-4 text-primary" />
+                            <span className="font-medium text-foreground">{entry.topic}</span>
                           </div>
                           <div className="mt-2 flex flex-wrap gap-1.5">
                             <Badge className={contentTypeClass[entry.content_type]}>
@@ -131,21 +131,21 @@ export function CalendarView({ entries }: CalendarViewProps) {
             const dayKey = toDateOnlyKey(day.toISOString());
             const dayEntries = grouped[dayKey] || [];
             return (
-              <div key={dayKey} className="min-h-44 rounded-md border bg-[#FAFAFA] p-3">
-                <p className="mb-3 text-sm font-semibold text-neutral-900">
+              <div key={dayKey} className="min-h-44 rounded-md border bg-muted/50 p-3">
+                <p className="mb-3 text-sm font-semibold text-foreground">
                   {weekdayLabel[index]} {day.toLocaleDateString("ja-JP", { month: "numeric", day: "numeric" })}
                 </p>
                 {dayEntries.length === 0 ? (
-                  <p className="text-xs text-neutral-500">投稿予定なし</p>
+                  <p className="text-xs text-muted-foreground">投稿予定なし</p>
                 ) : (
                   <div className="space-y-2">
                     {dayEntries.map((entry, entryIndex) => {
                       const Icon = getPlatformIcon(entry.platform);
                       return (
-                        <div key={`${dayKey}-${entry.platform}-${entryIndex}`} className="rounded-md border bg-white p-2">
+                        <div key={`${dayKey}-${entry.platform}-${entryIndex}`} className="rounded-md border bg-card p-2">
                           <div className="flex items-center gap-1.5 text-xs">
-                            <Icon className="h-3.5 w-3.5 text-[#1D3557]" />
-                            <span className="font-medium text-neutral-900">{entry.topic}</span>
+                            <Icon className="h-3.5 w-3.5 text-primary" />
+                            <span className="font-medium text-foreground">{entry.topic}</span>
                           </div>
                           <div className="mt-1.5 flex flex-wrap gap-1">
                             <Badge className={contentTypeClass[entry.content_type]}>

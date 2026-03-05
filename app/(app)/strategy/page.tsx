@@ -31,8 +31,8 @@ export default async function StrategyPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold text-neutral-900">コンテンツ戦略</h1>
-        <Button asChild className="bg-[#E63946] hover:bg-[#C62F3B]">
+        <h1 className="text-2xl font-bold text-foreground">コンテンツ戦略</h1>
+        <Button asChild>
           <Link href="/strategy/new" aria-label="新規AI戦略生成">
             新規AI戦略生成
           </Link>
@@ -41,7 +41,7 @@ export default async function StrategyPage() {
 
       {calendars.length === 0 ? (
         <Card className="rounded-md shadow-sm">
-          <CardContent className="pt-6 text-sm text-neutral-600">
+          <CardContent className="pt-6 text-sm text-muted-foreground">
             まだコンテンツカレンダーがありません。AIに戦略を提案してもらいましょう。
           </CardContent>
         </Card>
@@ -60,9 +60,9 @@ export default async function StrategyPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="text-sm text-neutral-600">
+                <p className="text-sm text-muted-foreground">
                   ターゲットリスト:{" "}
-                  <span className="font-medium text-neutral-900">
+                  <span className="font-medium text-foreground">
                     {calendar.target_list_id
                       ? listNameMap.get(calendar.target_list_id) || "-"
                       : "-"}

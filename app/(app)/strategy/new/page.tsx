@@ -102,7 +102,7 @@ export default function NewStrategyPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-neutral-900">AI戦略生成</h1>
+      <h1 className="text-2xl font-bold text-foreground">AI戦略生成</h1>
 
       <Card className="rounded-md shadow-sm">
         <CardHeader>
@@ -113,11 +113,11 @@ export default function NewStrategyPage() {
             <Label htmlFor="target-list-select">Step 1: ターゲットリスト選択</Label>
             {isLoadingLists ? (
               <div
-                className="h-10 w-full animate-pulse rounded-md bg-neutral-100 motion-reduce:animate-none"
+                className="h-10 w-full animate-pulse rounded-md bg-muted motion-reduce:animate-none"
                 aria-hidden="true"
               />
             ) : lists.length === 0 ? (
-              <p className="text-sm text-neutral-600">ターゲットリストがありません。</p>
+              <p className="text-sm text-muted-foreground">ターゲットリストがありません。</p>
             ) : (
               <Select value={selectedListId} onValueChange={setSelectedListId}>
                 <SelectTrigger id="target-list-select" aria-label="ターゲットリストを選択">
@@ -142,7 +142,7 @@ export default function NewStrategyPage() {
               value={weekStart}
               onChange={(event) => setWeekStart(event.target.value)}
               aria-label="週の開始日"
-              className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D3557]"
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
           </div>
 
@@ -152,36 +152,36 @@ export default function NewStrategyPage() {
               onClick={handleGenerate}
               disabled={!canSubmit || lists.length === 0 || isLoadingLists}
               aria-label="AI戦略を生成"
-              className="bg-[#E63946] hover:bg-[#C62F3B] motion-reduce:transition-none"
+              className="motion-reduce:transition-none"
             >
               AI戦略を生成
             </Button>
 
             {isGenerating && (
-              <div className="space-y-2 rounded-md border bg-[#FAFAFA] p-4">
-                <p className="text-sm text-neutral-700">AIが戦略を分析中...</p>
+              <div className="space-y-2 rounded-md border bg-muted/50 p-4">
+                <p className="text-sm text-muted-foreground">AIが戦略を分析中...</p>
                 <div
-                  className="h-4 w-3/4 animate-pulse rounded bg-neutral-200 motion-reduce:animate-none"
+                  className="h-4 w-3/4 animate-pulse rounded bg-muted motion-reduce:animate-none"
                   aria-hidden="true"
                 />
                 <div
-                  className="h-4 w-full animate-pulse rounded bg-neutral-200 motion-reduce:animate-none"
+                  className="h-4 w-full animate-pulse rounded bg-muted motion-reduce:animate-none"
                   aria-hidden="true"
                 />
                 <div
-                  className="h-4 w-5/6 animate-pulse rounded bg-neutral-200 motion-reduce:animate-none"
+                  className="h-4 w-5/6 animate-pulse rounded bg-muted motion-reduce:animate-none"
                   aria-hidden="true"
                 />
               </div>
             )}
 
             {listError && (
-              <p role="alert" className="text-sm text-[#EF4444]">
+              <p role="alert" className="text-sm text-destructive">
                 {listError}
               </p>
             )}
             {generateError && (
-              <p role="alert" className="text-sm text-[#EF4444]">
+              <p role="alert" className="text-sm text-destructive">
                 {generateError}
               </p>
             )}

@@ -17,7 +17,7 @@ interface CalendarActionsProps {
 }
 
 const taskStatusClassMap: Record<ContentTask["status"], string> = {
-  pending: "bg-neutral-100 text-neutral-700 border-transparent",
+  pending: "bg-muted text-muted-foreground border-transparent",
   in_progress: "bg-blue-100 text-blue-800 border-transparent",
   completed: "bg-green-100 text-green-800 border-transparent",
   skipped: "bg-yellow-100 text-yellow-800 border-transparent",
@@ -43,31 +43,31 @@ function formatDate(dateString: string | null) {
 
 export function TaskCard({ task }: TaskCardProps) {
   return (
-    <article className="rounded-md border bg-white p-4 shadow-sm">
+    <article className="rounded-md border bg-card p-4 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-1">
-          <h3 className="text-base font-semibold text-neutral-900">{task.title}</h3>
-          <p className="text-sm text-neutral-600">{task.description || "-"}</p>
+          <h3 className="text-base font-semibold text-foreground">{task.title}</h3>
+          <p className="text-sm text-muted-foreground">{task.description || "-"}</p>
         </div>
         <Badge className={taskStatusClassMap[task.status]}>{taskStatusLabelMap[task.status]}</Badge>
       </div>
 
       <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <dt className="text-neutral-500">プラットフォーム</dt>
-          <dd className="font-medium text-neutral-900">{task.platform}</dd>
+          <dt className="text-muted-foreground">プラットフォーム</dt>
+          <dd className="font-medium text-foreground">{task.platform}</dd>
         </div>
         <div>
-          <dt className="text-neutral-500">コンテンツタイプ</dt>
-          <dd className="font-medium text-neutral-900">{contentTypeLabelMap[task.content_type]}</dd>
+          <dt className="text-muted-foreground">コンテンツタイプ</dt>
+          <dd className="font-medium text-foreground">{contentTypeLabelMap[task.content_type]}</dd>
         </div>
         <div>
-          <dt className="text-neutral-500">期限日</dt>
-          <dd className="font-medium text-neutral-900">{formatDate(task.due_date)}</dd>
+          <dt className="text-muted-foreground">期限日</dt>
+          <dd className="font-medium text-foreground">{formatDate(task.due_date)}</dd>
         </div>
         <div>
-          <dt className="text-neutral-500">ステータス</dt>
-          <dd className="font-medium text-neutral-900">{taskStatusLabelMap[task.status]}</dd>
+          <dt className="text-muted-foreground">ステータス</dt>
+          <dd className="font-medium text-foreground">{taskStatusLabelMap[task.status]}</dd>
         </div>
       </dl>
     </article>
@@ -143,7 +143,7 @@ export function CalendarActions({
             onClick={handleApprove}
             disabled={isApproving}
             aria-label="カレンダーを承認"
-            className="bg-[#1D3557] hover:bg-[#14253D] motion-reduce:transition-none"
+            className="motion-reduce:transition-none"
           >
             {isApproving ? "承認中..." : "承認"}
           </Button>
@@ -154,14 +154,14 @@ export function CalendarActions({
             onClick={handleCreateTasks}
             disabled={isCreatingTasks}
             aria-label="タスクを生成"
-            className="bg-[#E63946] hover:bg-[#C62F3B] motion-reduce:transition-none"
+            className="motion-reduce:transition-none"
           >
             {isCreatingTasks ? "タスク生成中..." : "タスク生成"}
           </Button>
         )}
       </div>
       {error && (
-        <p role="alert" aria-live="polite" className="text-sm text-[#EF4444]">
+        <p role="alert" aria-live="polite" className="text-sm text-destructive">
           {error}
         </p>
       )}
