@@ -146,6 +146,13 @@ export async function POST(request: NextRequest) {
         .single();
 
       if (savedContent) {
+        // Auto-create conversation thread for AI-HR editing
+        await supabase.from("content_conversations").insert({
+          org_id: authUser.member.org_id,
+          content_id: savedContent.id,
+          status: "active",
+        });
+
         // Save apply link
         const code = Object.entries(applyLinks)
           .find(([p]) => p === content.platform)?.[1]

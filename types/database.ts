@@ -6,7 +6,15 @@ export type ContentStatus = "draft" | "review" | "approved" | "posted" | "reject
 
 export type TemplateType = "staff_day" | "job_intro" | "qa";
 
-export type Platform = "instagram" | "tiktok" | "line" | "meta_ad" | "google_jobs";
+export type Platform =
+  | "instagram"
+  | "tiktok"
+  | "line"
+  | "meta_ad"
+  | "google_jobs"
+  | "facebook"
+  | "x"
+  | "youtube";
 
 export type Channel = "organic" | "meta_ad" | "line" | "google" | "direct";
 
@@ -191,6 +199,20 @@ export type {
   CandidateList,
   CandidateListMember,
 } from "./quiz";
+
+// Re-export conversation types
+export type {
+  ContentConversation,
+  ConversationMessage,
+} from "./conversation";
+
+// Re-export SNS types
+export type {
+  SNSPlatform,
+  SNSConnection,
+  PostingQueue,
+  PostingLog,
+} from "./sns";
 
 export interface TrainerPost {
   id: string;

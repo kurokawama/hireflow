@@ -113,6 +113,15 @@ export interface CreateMemberRequest {
   store_id?: string;
 }
 
+// --- Conversations ---
+
+export type {
+  SendMessageRequest,
+  AIConversationResponse,
+  ApplyRevisionRequest,
+  ConversationResponse,
+} from "./conversation";
+
 // --- Trainer Portal ---
 
 export interface TrainerContentItem {

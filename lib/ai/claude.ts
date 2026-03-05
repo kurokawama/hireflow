@@ -28,13 +28,25 @@ export async function generateContent(
   const { profile, store, staffVoices, templates, platforms, applyLinks } = input;
 
   // Build the combined prompt for all platforms
+  // Default format instructions for platforms without templates
+  const defaultPlatformFormats: Record<string, string> = {
+    facebook:
+      "Facebook post format: engaging text (max 500 chars), 2-3 hashtags, call-to-action. Focus on storytelling and community engagement.",
+    x: "X (Twitter) format: concise text (max 280 chars), 2-3 relevant hashtags. Punchy and attention-grabbing.",
+    youtube:
+      "YouTube description format: detailed description (300-1000 chars), relevant keywords, timestamps section if applicable. Include call-to-action.",
+  };
+
   const platformInstructions = platforms
     .map((p) => {
       const template = templates.find((t) => t.platform === p);
-      if (!template) return "";
+      const formatInstructions =
+        template?.developer_prompt ||
+        defaultPlatformFormats[p] ||
+        `${p.toUpperCase()} format: generate appropriate content for this platform.`;
       return `
 ### ${p.toUpperCase()} format:
-${template.developer_prompt}
+${formatInstructions}
 Apply link for ${p}: ${applyLinks[p] || ""}
 `;
     })
