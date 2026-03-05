@@ -14,6 +14,8 @@ import {
   Target,
   Calendar,
   BarChart3,
+  Megaphone,
+  Share2,
   Settings,
   LogOut,
   User,
@@ -66,6 +68,18 @@ const navItems = [
     label: "分析",
     icon: BarChart3,
     roles: ["admin", "hq_staff"] as RoleType[],
+  },
+  {
+    href: "/ads",
+    label: "広告管理",
+    icon: Megaphone,
+    roles: ["admin", "hq_staff"] as RoleType[],
+  },
+  {
+    href: "/advocacy",
+    label: "社員アドボカシー",
+    icon: Share2,
+    roles: ["admin", "hq_staff", "store_manager"] as RoleType[],
   },
   {
     href: "/settings/stores",
