@@ -19,7 +19,10 @@ import type { GenerateResponse } from "@/types/dto";
 
 type StoreOption = Pick<Store, "id" | "store_name">;
 type ProfileOption = Pick<Profile, "id" | "profile_name">;
-type GeneratePlatform = Extract<Platform, "instagram" | "tiktok" | "line" | "meta_ad">;
+type GeneratePlatform = Extract<
+  Platform,
+  "instagram" | "tiktok" | "line" | "meta_ad" | "facebook" | "x" | "youtube"
+>;
 type GeneratedResult = GenerateResponse["contents"][number];
 
 const FALLBACK_STORES: StoreOption[] = [
@@ -33,7 +36,24 @@ const FALLBACK_PROFILES: ProfileOption[] = [
 ];
 
 const TEMPLATE_OPTIONS: TemplateType[] = ["staff_day", "job_intro", "qa"];
-const PLATFORM_OPTIONS: GeneratePlatform[] = ["instagram", "tiktok", "line", "meta_ad"];
+const PLATFORM_OPTIONS: GeneratePlatform[] = [
+  "instagram",
+  "tiktok",
+  "line",
+  "meta_ad",
+  "facebook",
+  "x",
+  "youtube",
+];
+const PLATFORM_LABELS: Record<GeneratePlatform, string> = {
+  instagram: "instagram",
+  tiktok: "tiktok",
+  line: "line",
+  meta_ad: "meta_ad",
+  facebook: "Facebook",
+  x: "X",
+  youtube: "YouTube",
+};
 
 export default function GeneratorPage() {
   const [stores, setStores] = useState<StoreOption[]>(FALLBACK_STORES);
@@ -206,7 +226,7 @@ export default function GeneratorPage() {
                     checked={platforms.includes(platform)}
                     onChange={() => togglePlatform(platform)}
                   />
-                  <span>{platform}</span>
+                  <span>{PLATFORM_LABELS[platform]}</span>
                 </label>
               ))}
             </div>

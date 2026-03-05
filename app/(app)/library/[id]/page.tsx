@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import Link from "next/link";
 import Script from "next/script";
 import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
@@ -143,8 +144,19 @@ export default async function LibraryDetailPage({ params }: LibraryDetailPagePro
                 Approve
               </Button>
             </form>
+            {contentStatus !== "approved" && (
+              <form action={updateStatusAction}>
+                <input type="hidden" name="status" value="approved" />
+                <Button type="submit" disabled={!canEdit} className="bg-[#1D3557] hover:bg-[#14253d]">
+                  承認
+                </Button>
+              </form>
+            )}
             <Button type="button" variant="outline" data-copy-text={content.body_text}>
               Copy
+            </Button>
+            <Button asChild type="button" variant="outline">
+              <Link href={`/library/${params.id}/conversation`}>AIと相談</Link>
             </Button>
             <form action={updateStatusAction}>
               <input type="hidden" name="status" value="posted" />
