@@ -1,4 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
+import { getTargetLists } from "@/lib/actions/targets";
+import { getCalendars } from "@/lib/actions/strategy";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -27,9 +29,14 @@ function getStartOfWeekIso() {
   return start.toISOString();
 }
 
+function toDateOnlyKey(value: string) {
+  return new Date(value).toISOString().slice(0, 10);
+}
+
 export default async function DashboardPage() {
   const supabase = await createClient();
   const weekStart = getStartOfWeekIso();
+  const thisWeekKey = toDateOnlyKey(weekStart);
 
   const mockKpi = {
     generations: 42,
@@ -133,6 +140,22 @@ export default async function DashboardPage() {
         applications: applicationsResult.count || 0,
       };
 
+  let totalTargetProfiles = 0;
+  let thisWeekTaskCountLabel = "-";
+  try {
+    const [targetLists, calendars] = await Promise.all([getTargetLists(), getCalendars()]);
+    totalTargetProfiles = targetLists.reduce((sum, list) => sum + (list.profile_count || 0), 0);
+    const thisWeekCalendar = calendars.find(
+      (calendar) => toDateOnlyKey(calendar.week_start) === thisWeekKey
+    );
+    if (thisWeekCalendar) {
+      thisWeekTaskCountLabel = String((thisWeekCalendar.calendar_json || []).length);
+    }
+  } catch {
+    totalTargetProfiles = 0;
+    thisWeekTaskCountLabel = "-";
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -221,6 +244,34 @@ export default async function DashboardPage() {
               ))}
             </TableBody>
           </Table>
+        </CardContent>
+      </Card>
+
+      <Card className="rounded-md shadow-sm">
+        <CardHeader>
+          <CardTitle>戦略サマリー</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Card className="rounded-md shadow-sm">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-neutral-500">
+                  ターゲットプロフィール総数
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold text-neutral-900">{totalTargetProfiles}</p>
+              </CardContent>
+            </Card>
+            <Card className="rounded-md shadow-sm">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-neutral-500">今週のタスク数</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold text-neutral-900">{thisWeekTaskCountLabel}</p>
+              </CardContent>
+            </Card>
+          </div>
         </CardContent>
       </Card>
     </div>

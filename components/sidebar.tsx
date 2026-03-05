@@ -11,6 +11,8 @@ import {
   Sparkles,
   Library,
   Users,
+  Target,
+  Calendar,
   BarChart3,
   Settings,
   LogOut,
@@ -45,6 +47,18 @@ const navItems = [
     href: "/candidates",
     label: "候補者プール",
     icon: Users,
+    roles: ["admin", "hq_staff", "store_manager"] as RoleType[],
+  },
+  {
+    href: "/targets",
+    label: "ターゲットリスト",
+    icon: Target,
+    roles: ["admin", "hq_staff", "store_manager"] as RoleType[],
+  },
+  {
+    href: "/strategy",
+    label: "コンテンツ戦略",
+    icon: Calendar,
     roles: ["admin", "hq_staff", "store_manager"] as RoleType[],
   },
   {
