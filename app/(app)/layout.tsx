@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Sidebar } from "@/components/sidebar";
+import { MobileNav } from "@/components/mobile-nav";
 
 export default async function AppLayout({
   children,
@@ -29,9 +30,10 @@ export default async function AppLayout({
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen flex-col lg:flex-row">
+      <MobileNav role={member.role} displayName={member.display_name} />
       <Sidebar role={member.role} displayName={member.display_name} />
-      <main className="flex-1 overflow-auto bg-neutral-50 p-6 lg:p-8">
+      <main className="flex-1 overflow-auto bg-neutral-50 p-4 pt-4 lg:p-8">
         {children}
       </main>
     </div>

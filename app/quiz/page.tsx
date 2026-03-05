@@ -210,7 +210,11 @@ function QuizContent() {
                   {sportsExpOptions.map((option) => (
                     <label
                       key={option.value}
-                      className="flex cursor-pointer items-center gap-3 rounded-md border bg-white px-3 py-2 text-sm hover:border-[#E63946]/40"
+                      className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 text-sm transition-colors ${
+                        form.sports_exp === option.value
+                          ? "border-[#E63946] bg-[#E63946]/5 font-medium text-[#1D3557]"
+                          : "border-neutral-200 bg-white hover:border-[#E63946]/40"
+                      }`}
                     >
                       <input
                         type="radio"
@@ -238,7 +242,11 @@ function QuizContent() {
                   {interestOptions.map((option) => (
                     <label
                       key={option.value}
-                      className="flex cursor-pointer items-center gap-3 rounded-md border bg-white px-3 py-2 text-sm hover:border-[#E63946]/40"
+                      className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 text-sm transition-colors ${
+                        form.interests.includes(option.value)
+                          ? "border-[#E63946] bg-[#E63946]/5 font-medium text-[#1D3557]"
+                          : "border-neutral-200 bg-white hover:border-[#E63946]/40"
+                      }`}
                     >
                       <input
                         type="checkbox"
@@ -274,7 +282,11 @@ function QuizContent() {
                   {ageOptions.map((option) => (
                     <label
                       key={option.value}
-                      className="flex cursor-pointer items-center gap-3 rounded-md border bg-white px-3 py-2 text-sm hover:border-[#E63946]/40"
+                      className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 text-sm transition-colors ${
+                        form.age_range === option.value
+                          ? "border-[#E63946] bg-[#E63946]/5 font-medium text-[#1D3557]"
+                          : "border-neutral-200 bg-white hover:border-[#E63946]/40"
+                      }`}
                     >
                       <input
                         type="radio"
@@ -303,7 +315,11 @@ function QuizContent() {
                     {timingOptions.map((option) => (
                       <label
                         key={option.value}
-                        className="flex cursor-pointer items-center gap-3 rounded-md border bg-white px-3 py-2 text-sm hover:border-[#E63946]/40"
+                        className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 text-sm transition-colors ${
+                          form.start_timing === option.value
+                            ? "border-[#E63946] bg-[#E63946]/5 font-medium text-[#1D3557]"
+                            : "border-neutral-200 bg-white hover:border-[#E63946]/40"
+                        }`}
                       >
                         <input
                           type="radio"

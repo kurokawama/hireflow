@@ -76,9 +76,16 @@ export default function LoginPage() {
                 {error}
               </p>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={loading}
+            >
               {loading ? "ログイン中..." : "ログイン"}
             </Button>
+            <p className="text-center text-xs text-neutral-400 mt-2">
+              パスワードをお忘れの方は管理者へご連絡ください
+            </p>
           </form>
         </CardContent>
       </Card>

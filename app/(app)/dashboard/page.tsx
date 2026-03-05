@@ -37,6 +37,13 @@ export default async function DashboardPage() {
     applications: 19,
   };
 
+  const channelLabelMap: Record<string, string> = {
+    organic: "オーガニック検索",
+    meta_ad: "Meta広告",
+    line: "LINE",
+    direct: "ダイレクト",
+  };
+
   const mockChannelRows: ChannelRow[] = [
     { channel: "organic", clicks: 142, applications: 9 },
     { channel: "meta_ad", clicks: 108, applications: 6 },
@@ -178,21 +185,23 @@ export default async function DashboardPage() {
 
       <Card className="rounded-md shadow-sm">
         <CardHeader>
-          <CardTitle>Channel Breakdown</CardTitle>
+          <CardTitle>チャネル別実績</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Channel</TableHead>
-                <TableHead className="text-right">Clicks</TableHead>
-                <TableHead className="text-right">Applications</TableHead>
+                <TableHead>チャネル</TableHead>
+                <TableHead className="text-right">クリック数</TableHead>
+                <TableHead className="text-right">応募数</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {channelRows.map((row) => (
                 <TableRow key={row.channel}>
-                  <TableCell className="font-medium">{row.channel}</TableCell>
+                  <TableCell className="font-medium">
+                    {channelLabelMap[row.channel] ?? row.channel}
+                  </TableCell>
                   <TableCell className="text-right">{row.clicks}</TableCell>
                   <TableCell className="text-right">{row.applications}</TableCell>
                 </TableRow>
