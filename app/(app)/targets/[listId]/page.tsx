@@ -240,8 +240,8 @@ export default async function TargetListDetailPage({
                 </form>
               </DialogContent>
             </Dialog>
-            <Button asChild aria-label="YouTube検索ページへ移動">
-              <Link href={`/targets/${listId}/search`}>YouTube検索</Link>
+            <Button asChild aria-label="SNS自動収集ページへ移動">
+              <Link href={`/targets/${listId}/search`}>SNS自動収集</Link>
             </Button>
           </div>
         </div>
@@ -314,7 +314,7 @@ export default async function TargetListDetailPage({
       {filteredProfiles.length === 0 && (
         <div className="rounded-lg border border-dashed border-border bg-muted/30 p-10 text-center">
           <p className="text-sm text-muted-foreground">
-            プロフィールがまだありません。プロフィール追加またはYouTube検索から登録してください。
+            プロフィールがまだありません。「SNS自動収集」からキーワードと条件を設定すると、AIが自動で検索・登録します。
           </p>
         </div>
       )}

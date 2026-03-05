@@ -27,6 +27,7 @@ export interface TargetList {
   keywords: string[];
   platform_filter: string[];
   profile_count: number;
+  collection_criteria: CollectionCriteria | null;
   created_by: string | null;
   created_at: string;
   updated_at: string;
@@ -97,4 +98,43 @@ export interface YouTubeSearchResult {
   subscriber_count: number | null;
   video_count: number | null;
   profile_url: string;
+}
+
+// ============================================================
+// Automated Collection
+// ============================================================
+
+export interface CollectionCriteria {
+  keywords: string[];
+  age_min?: number;
+  age_max?: number;
+  location?: string;
+  platforms: string[];
+  score_threshold: number; // 0-100, auto-register profiles above this
+  max_results_per_keyword: number;
+}
+
+export interface CollectionResult {
+  profiles_found: number;
+  profiles_added: number;
+  profiles_skipped: number;
+  profiles_duplicate: number;
+  errors: string[];
+}
+
+export interface ProfileScoreResult {
+  score: number; // 0-100
+  estimated_age_min: number | null;
+  estimated_age_max: number | null;
+  estimated_location: string | null;
+  persona_category: PersonaCategory;
+  interest_tags: string[];
+  score_factors: {
+    relevance: number;
+    activity: number;
+    audience_size: number;
+    content_quality: number;
+    recruitment_fit: number;
+  };
+  reasoning: string;
 }
