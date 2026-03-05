@@ -34,11 +34,14 @@ export interface GenerateResponse {
 // --- Quiz ---
 
 export interface QuizSubmitRequest {
-  sports_exp: "current" | "past" | "injury_break" | "spectator" | "none";
-  interests: string[];
-  area: string;
-  age_range: "18-22" | "23-27" | "28-32" | "33+";
-  start_timing: "immediately" | "1-3months" | "exploring";
+  campaign_id?: string;
+  answers?: Record<string, unknown>;
+  // Legacy fields (backward compat)
+  sports_exp?: "current" | "past" | "injury_break" | "spectator" | "none";
+  interests?: string[];
+  area?: string;
+  age_range?: "18-22" | "23-27" | "28-32" | "33+";
+  start_timing?: "immediately" | "1-3months" | "exploring";
   name?: string;
   email?: string;
   line_id?: string;

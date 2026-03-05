@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "HireFlow",
-  description: "AI Recruitment Engine for Dr. Stretch / Wecle",
+  title: "のびてる スカウティングツール",
+  description: "株式会社のびてる（NOBITEL）AI採用エンジン — Dr. Stretch / Wecle",
 };
 
 export default function RootLayout({

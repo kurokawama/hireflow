@@ -153,6 +153,7 @@ export interface Candidate {
   id: string;
   org_id: string;
   store_id: string | null;
+  campaign_id: string | null;
   source_channel: Channel;
   utm_source: string | null;
   utm_medium: string | null;
@@ -180,6 +181,16 @@ export interface CandidateEvent {
   metadata: Record<string, unknown>;
   occurred_at: string;
 }
+
+// Re-export quiz types for convenience
+export type {
+  QuizCampaign,
+  QuizQuestion,
+  QuizOption,
+  ScoringProfile,
+  CandidateList,
+  CandidateListMember,
+} from "./quiz";
 
 export interface TrainerPost {
   id: string;
