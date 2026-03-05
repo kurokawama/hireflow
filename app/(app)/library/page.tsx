@@ -62,7 +62,16 @@ function isStatus(value: string): value is ContentStatus {
 }
 
 function isPlatform(value: string): value is Platform {
-  return ["instagram", "tiktok", "line", "meta_ad", "google_jobs"].includes(value);
+  return [
+    "instagram",
+    "tiktok",
+    "line",
+    "meta_ad",
+    "google_jobs",
+    "facebook",
+    "x",
+    "youtube",
+  ].includes(value);
 }
 
 function isTemplate(value: string): value is TemplateType {
@@ -219,6 +228,9 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
                 <SelectItem value="line">line</SelectItem>
                 <SelectItem value="meta_ad">meta_ad</SelectItem>
                 <SelectItem value="google_jobs">google_jobs</SelectItem>
+                <SelectItem value="facebook">Facebook</SelectItem>
+                <SelectItem value="x">X</SelectItem>
+                <SelectItem value="youtube">YouTube</SelectItem>
               </SelectContent>
             </Select>
 
