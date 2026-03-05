@@ -234,6 +234,26 @@ export type {
   ContentType,
 } from "./strategy";
 
+// Re-export ad types
+export type {
+  AdPlatform,
+  AdStatus,
+  AudienceType,
+  AdAudience,
+  AdCampaign,
+  AdPerformance,
+  AttributeAnalysis,
+  TargetingAttributes,
+} from "./ads";
+
+// Re-export advocacy types
+export type {
+  StaffSnsAccount,
+  PostingKit,
+  StaffShare,
+  KitStatus,
+} from "./advocacy";
+
 export interface TrainerPost {
   id: string;
   org_id: string;

@@ -10,7 +10,10 @@ export type ProfileSource =
   | "manual"
   | "youtube_search"
   | "x_search"
-  | "instagram_hashtag";
+  | "instagram_hashtag"
+  | "instagram_apify"
+  | "tiktok_apify"
+  | "x_api";
 
 export type TargetProfileStatus =
   | "active"
