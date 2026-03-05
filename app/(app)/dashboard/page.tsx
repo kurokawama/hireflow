@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Sparkles, MousePointerClick, ClipboardCheck, UserPlus } from "lucide-react";
 
 type ChannelRow = {
   channel: string;
@@ -147,9 +148,12 @@ export default async function DashboardPage() {
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <Card className="rounded-md shadow-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-neutral-500">
-                  コンテンツ生成数
-                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-[#E63946]" />
+                  <CardTitle className="text-sm text-neutral-500">
+                    コンテンツ生成数
+                  </CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <p className="text-2xl font-bold text-neutral-900">{kpi.generations}</p>
@@ -157,7 +161,10 @@ export default async function DashboardPage() {
             </Card>
             <Card className="rounded-md shadow-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-neutral-500">クリック数</CardTitle>
+                <div className="flex items-center gap-2">
+                  <MousePointerClick className="h-4 w-4 text-[#F4A261]" />
+                  <CardTitle className="text-sm text-neutral-500">クリック数</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <p className="text-2xl font-bold text-neutral-900">{kpi.clicks}</p>
@@ -165,7 +172,10 @@ export default async function DashboardPage() {
             </Card>
             <Card className="rounded-md shadow-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-neutral-500">診断完了</CardTitle>
+                <div className="flex items-center gap-2">
+                  <ClipboardCheck className="h-4 w-4 text-[#457B9D]" />
+                  <CardTitle className="text-sm text-neutral-500">診断完了</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <p className="text-2xl font-bold text-neutral-900">{kpi.quizCompletions}</p>
@@ -173,7 +183,10 @@ export default async function DashboardPage() {
             </Card>
             <Card className="rounded-md shadow-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-neutral-500">応募数</CardTitle>
+                <div className="flex items-center gap-2">
+                  <UserPlus className="h-4 w-4 text-[#2A9D8F]" />
+                  <CardTitle className="text-sm text-neutral-500">応募数</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <p className="text-2xl font-bold text-neutral-900">{kpi.applications}</p>

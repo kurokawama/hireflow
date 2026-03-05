@@ -189,7 +189,7 @@ function QuizContent() {
 
             <div className="space-y-2">
               <p className="text-sm font-medium text-[#1D3557]">
-                Step {step} of {totalSteps}
+                ステップ {step} / {totalSteps}
               </p>
               <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-200">
                 <div
@@ -270,7 +270,7 @@ function QuizContent() {
                   onChange={(event) =>
                     setForm((prev) => ({ ...prev, area: event.target.value }))
                   }
-                  placeholder="Area"
+                  placeholder="例: 東京都渋谷区"
                 />
               </div>
             )}
