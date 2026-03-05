@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Logo } from "@/components/logo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -41,9 +42,11 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">HireFlow</CardTitle>
+          <CardTitle className="flex justify-center">
+            <Logo size="lg" showSubtext />
+          </CardTitle>
           <p className="text-sm text-neutral-500 mt-1">
-            AI Recruitment Engine
+            AI採用エンジン
           </p>
         </CardHeader>
         <CardContent>

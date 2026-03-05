@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 import { useRouter } from "next/navigation";
 import type { RoleType } from "@/types/database";
+import { Logo } from "@/components/logo";
 import {
   LayoutDashboard,
   Sparkles,
@@ -79,7 +80,7 @@ export function MobileNav({ role, displayName }: MobileNavProps) {
   return (
     <div className="lg:hidden">
       <header className="flex items-center justify-between bg-[#1D3557] px-4 py-3 text-white">
-        <h1 className="text-lg font-bold">HireFlow</h1>
+        <Logo size="sm" variant="light" />
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="rounded-md p-2 hover:bg-white/10 transition-colors"
@@ -97,7 +98,7 @@ export function MobileNav({ role, displayName }: MobileNavProps) {
           />
           <nav className="fixed inset-y-0 left-0 z-50 w-64 bg-[#1D3557] text-white flex flex-col">
             <div className="p-6 border-b border-white/10">
-              <h1 className="text-xl font-bold">HireFlow</h1>
+              <Logo size="sm" variant="light" />
               <p className="text-xs text-white/60 mt-1">AI Recruitment Engine</p>
             </div>
 

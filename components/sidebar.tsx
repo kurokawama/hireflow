@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 import { useRouter } from "next/navigation";
 import type { RoleType } from "@/types/database";
+import { Logo } from "@/components/logo";
 import {
   LayoutDashboard,
   Sparkles,
@@ -77,7 +78,7 @@ export function Sidebar({ role, displayName }: SidebarProps) {
     <aside className="hidden lg:flex w-64 flex-col bg-[#1D3557] text-white">
       {/* Logo */}
       <div className="p-6 border-b border-white/10">
-        <h1 className="text-xl font-bold">HireFlow</h1>
+        <Logo size="md" variant="light" />
         <p className="text-xs text-white/60 mt-1">AI Recruitment Engine</p>
       </div>
 
