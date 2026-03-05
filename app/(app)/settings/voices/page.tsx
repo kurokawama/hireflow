@@ -242,6 +242,12 @@ export default function SettingsVoicesPage() {
         <Link href="/settings/voices" className={navClass(true)}>
           スタッフボイス
         </Link>
+        <Link href="/settings/quiz" className={navClass(false)}>
+          クイズ
+        </Link>
+        <Link href="/settings/lists" className={navClass(false)}>
+          リスト
+        </Link>
       </div>
 
       <div className="flex items-end justify-between gap-4">
