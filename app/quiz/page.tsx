@@ -1,66 +1,57 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-type SportsExp = "current" | "past" | "injury_break" | "spectator" | "none";
-type Interest = "body_care" | "training" | "customer_service" | "health_work";
-type AgeRange = "18-22" | "23-27" | "28-32" | "33+";
-type StartTiming = "immediately" | "1-3months" | "exploring";
+type QuestionType = "single_select" | "multi_select" | "text_input";
 
-type QuizForm = {
-  sports_exp: SportsExp | "";
-  interests: Interest[];
-  area: string;
-  age_range: AgeRange | "";
-  start_timing: StartTiming | "";
+type QuizOption = {
+  id: string;
+  option_value: string;
+  option_label: string;
+  sort_order: number;
+};
+
+type QuizQuestion = {
+  id: string;
+  question_key: string;
+  question_text: string;
+  question_type: QuestionType;
+  sort_order: number;
+  is_required: boolean;
+  quiz_options: QuizOption[];
+};
+
+type QuizCampaign = {
+  id: string;
   name: string;
-  email: string;
+  brand: string;
 };
 
-const totalSteps = 5;
-
-const initialForm: QuizForm = {
-  sports_exp: "",
-  interests: [],
-  area: "",
-  age_range: "",
-  start_timing: "",
-  name: "",
-  email: "",
+type QuizConfigData = {
+  campaign_id?: string;
+  campaign_name?: string;
+  brand?: string;
+  questions?: QuizQuestion[];
 };
 
-const sportsExpOptions: Array<{ value: SportsExp; label: string }> = [
-  { value: "current", label: "現在もやっている" },
-  { value: "past", label: "以前やっていた" },
-  { value: "injury_break", label: "怪我で中断した" },
-  { value: "spectator", label: "観戦が好き" },
-  { value: "none", label: "特になし" },
-];
+type QuizConfigResponse = {
+  data?: QuizConfigData;
+  campaign?: QuizCampaign;
+  questions?: QuizQuestion[];
+  error?: string;
+};
 
-const interestOptions: Array<{ value: Interest; label: string }> = [
-  { value: "body_care", label: "ボディケア" },
-  { value: "training", label: "トレーニング指導" },
-  { value: "customer_service", label: "接客" },
-  { value: "health_work", label: "健康に関わる仕事" },
-];
+type QuizSubmitResponse = {
+  data?: { candidate_id?: string };
+  error?: string;
+};
 
-const ageOptions: Array<{ value: AgeRange; label: string }> = [
-  { value: "18-22", label: "18-22" },
-  { value: "23-27", label: "23-27" },
-  { value: "28-32", label: "28-32" },
-  { value: "33+", label: "33+" },
-];
-
-const timingOptions: Array<{ value: StartTiming; label: string }> = [
-  { value: "immediately", label: "すぐに" },
-  { value: "1-3months", label: "1〜3ヶ月以内" },
-  { value: "exploring", label: "まだ考え中" },
-];
+type Answers = Record<string, string | string[]>;
 
 export default function QuizPage() {
   return (
@@ -73,43 +64,112 @@ export default function QuizPage() {
 function QuizContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [step, setStep] = useState(1);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
-  const [form, setForm] = useState<QuizForm>(initialForm);
+  const campaignSlug = searchParams.get("campaign");
 
-  const progress = useMemo(() => (step / totalSteps) * 100, [step]);
+  const [campaign, setCampaign] = useState<QuizCampaign | null>(null);
+  const [questions, setQuestions] = useState<QuizQuestion[]>([]);
+  const [answers, setAnswers] = useState<Answers>({});
+  const [step, setStep] = useState(1);
+  const [loadingConfig, setLoadingConfig] = useState(true);
+  const [configError, setConfigError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const totalSteps = questions.length;
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    const loadQuizConfig = async () => {
+      setLoadingConfig(true);
+      setConfigError("");
+
+      try {
+        const endpoint = campaignSlug
+          ? `/api/quiz/config?campaign=${encodeURIComponent(campaignSlug)}`
+          : "/api/quiz/config";
+        const response = await fetch(endpoint);
+        const payload = (await response.json()) as QuizConfigResponse;
+
+        if (!response.ok) {
+          throw new Error(payload.error ?? "Failed to load quiz configuration.");
+        }
+
+        const campaignId = payload.data?.campaign_id ?? payload.campaign?.id ?? "";
+        const campaignName = payload.data?.campaign_name ?? payload.campaign?.name ?? "";
+        const brand = payload.data?.brand ?? payload.campaign?.brand ?? "";
+        const normalizedQuestions = (payload.data?.questions ?? payload.questions ?? [])
+          .slice()
+          .sort((a, b) => a.sort_order - b.sort_order)
+          .map((question) => ({
+            ...question,
+            quiz_options: (question.quiz_options ?? [])
+              .slice()
+              .sort((a, b) => a.sort_order - b.sort_order),
+          }));
+
+        if (!campaignId) {
+          throw new Error("Campaign not found");
+        }
+
+        if (!isCancelled) {
+          setCampaign({ id: campaignId, name: campaignName, brand });
+          setQuestions(normalizedQuestions);
+          setAnswers({});
+          setStep(1);
+        }
+      } catch (loadError) {
+        if (!isCancelled) {
+          if (loadError instanceof Error) {
+            setConfigError(loadError.message);
+          } else {
+            setConfigError("Unknown error.");
+          }
+          setCampaign(null);
+          setQuestions([]);
+          setAnswers({});
+          setStep(1);
+        }
+      } finally {
+        if (!isCancelled) {
+          setLoadingConfig(false);
+        }
+      }
+    };
+
+    void loadQuizConfig();
+    return () => {
+      isCancelled = true;
+    };
+  }, [campaignSlug]);
+
+  const currentQuestion = useMemo(
+    () => questions[Math.max(step - 1, 0)] ?? null,
+    [questions, step]
+  );
+  const progress = useMemo(
+    () => (totalSteps > 0 ? (step / totalSteps) * 100 : 0),
+    [step, totalSteps]
+  );
 
   const canProceed = useMemo(() => {
-    if (step === 1) {
-      return Boolean(form.sports_exp);
+    if (!currentQuestion) {
+      return false;
     }
-    if (step === 2) {
-      return form.interests.length > 0;
+    if (!currentQuestion.is_required) {
+      return true;
     }
-    if (step === 3) {
-      return form.area.trim().length > 0;
-    }
-    if (step === 4) {
-      return Boolean(form.age_range);
-    }
-    if (step === 5) {
-      return Boolean(form.start_timing);
-    }
-    return false;
-  }, [step, form]);
 
-  const toggleInterest = (interest: Interest) => {
-    setForm((prev) => {
-      if (prev.interests.includes(interest)) {
-        return {
-          ...prev,
-          interests: prev.interests.filter((item) => item !== interest),
-        };
-      }
-      return { ...prev, interests: [...prev.interests, interest] };
-    });
-  };
+    const answer = answers[currentQuestion.question_key];
+    if (currentQuestion.question_type === "multi_select") {
+      return Array.isArray(answer) && answer.length > 0;
+    }
+    if (currentQuestion.question_type === "text_input") {
+      return typeof answer === "string" && answer.trim().length > 0;
+    }
+    return typeof answer === "string" && answer.length > 0;
+  }, [answers, currentQuestion]);
 
   const handleBack = () => {
     if (step > 1) {
@@ -117,8 +177,30 @@ function QuizContent() {
     }
   };
 
+  const updateSingleSelect = (questionKey: string, value: string) => {
+    setAnswers((prev) => ({ ...prev, [questionKey]: value }));
+  };
+
+  const toggleMultiSelect = (questionKey: string, value: string) => {
+    setAnswers((prev) => {
+      const previousAnswer = prev[questionKey];
+      const selectedValues = Array.isArray(previousAnswer) ? previousAnswer : [];
+      const exists = selectedValues.includes(value);
+      return {
+        ...prev,
+        [questionKey]: exists
+          ? selectedValues.filter((item) => item !== value)
+          : [...selectedValues, value],
+      };
+    });
+  };
+
+  const updateTextInput = (questionKey: string, value: string) => {
+    setAnswers((prev) => ({ ...prev, [questionKey]: value }));
+  };
+
   const handleNextOrSubmit = async () => {
-    if (!canProceed || submitting) {
+    if (!currentQuestion || !canProceed || submitting) {
       return;
     }
 
@@ -128,7 +210,7 @@ function QuizContent() {
     }
 
     setSubmitting(true);
-    setError("");
+    setSubmitError("");
 
     try {
       const response = await fetch("/api/quiz/submit", {
@@ -137,26 +219,20 @@ function QuizContent() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          sports_exp: form.sports_exp,
-          interests: form.interests,
-          area: form.area,
-          age_range: form.age_range,
-          start_timing: form.start_timing,
-          name: form.name || undefined,
-          email: form.email || undefined,
+          campaign_id: campaign?.id,
+          answers,
+          name: name || undefined,
+          email: email || undefined,
           utm_source: searchParams.get("utm_source") ?? undefined,
           utm_medium: searchParams.get("utm_medium") ?? undefined,
           utm_campaign: searchParams.get("utm_campaign") ?? undefined,
         }),
       });
 
+      const payload = (await response.json()) as QuizSubmitResponse;
       if (!response.ok) {
-        throw new Error("Request failed.");
+        throw new Error(payload.error ?? "Request failed.");
       }
-
-      const payload = (await response.json()) as {
-        data?: { candidate_id?: string };
-      };
 
       const candidateId = payload.data?.candidate_id;
       if (!candidateId) {
@@ -166,17 +242,165 @@ function QuizContent() {
       router.push(`/quiz/result?id=${candidateId}`);
     } catch (submitError) {
       if (submitError instanceof Error) {
-        setError(submitError.message);
+        setSubmitError(submitError.message);
       } else {
-        setError("Unknown error.");
+        setSubmitError("Unknown error.");
       }
     } finally {
       setSubmitting(false);
     }
   };
 
+  const renderQuestionInput = (question: QuizQuestion) => {
+    const answer = answers[question.question_key];
+
+    if (question.question_type === "single_select") {
+      return (
+        <fieldset className="space-y-3">
+          <legend className="text-base font-semibold text-[#1D3557]">{question.question_text}</legend>
+          <div className="space-y-2">
+            {question.quiz_options.map((option) => {
+              const checked = answer === option.option_value;
+              return (
+                <label
+                  key={option.id}
+                  className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 text-sm transition-colors ${
+                    checked
+                      ? "border-[#E63946] bg-[#E63946]/10 font-medium text-[#1D3557]"
+                      : "border-neutral-200 bg-white hover:border-[#E63946]/40"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name={question.question_key}
+                    value={option.option_value}
+                    checked={checked}
+                    onChange={() => updateSingleSelect(question.question_key, option.option_value)}
+                    className="h-4 w-4 accent-[#E63946]"
+                    aria-label={option.option_label}
+                  />
+                  <span>{option.option_label}</span>
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+      );
+    }
+
+    if (question.question_type === "multi_select") {
+      const selectedValues = Array.isArray(answer) ? answer : [];
+      return (
+        <fieldset className="space-y-3">
+          <legend className="text-base font-semibold text-[#1D3557]">{question.question_text}</legend>
+          <div className="space-y-2">
+            {question.quiz_options.map((option) => {
+              const checked = selectedValues.includes(option.option_value);
+              return (
+                <label
+                  key={option.id}
+                  className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 text-sm transition-colors ${
+                    checked
+                      ? "border-[#E63946] bg-[#E63946]/10 font-medium text-[#1D3557]"
+                      : "border-neutral-200 bg-white hover:border-[#E63946]/40"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    value={option.option_value}
+                    checked={checked}
+                    onChange={() => toggleMultiSelect(question.question_key, option.option_value)}
+                    className="h-4 w-4 accent-[#E63946]"
+                    aria-label={option.option_label}
+                    aria-required={question.is_required}
+                  />
+                  <span>{option.option_label}</span>
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+      );
+    }
+
+    return (
+      <div className="space-y-3">
+        <p className="text-base font-semibold text-[#1D3557]">{question.question_text}</p>
+        <Input
+          value={typeof answer === "string" ? answer : ""}
+          onChange={(event) => updateTextInput(question.question_key, event.target.value)}
+          placeholder={question.question_key === "area" ? "例: 東京都渋谷区" : undefined}
+          aria-label={question.question_text}
+          aria-required={question.is_required}
+        />
+      </div>
+    );
+  };
+
+  if (loadingConfig) {
+    return (
+      <div className="min-h-screen bg-neutral-50 px-4 py-6">
+        <div className="mx-auto w-full max-w-md">
+          <Card className="rounded-md border-[#F4A261]/30 bg-white shadow-sm">
+            <CardHeader className="space-y-3">
+              <div className="h-8 w-2/3 animate-pulse rounded bg-neutral-200" />
+              <div className="h-4 w-1/2 animate-pulse rounded bg-neutral-200" />
+              <div className="h-2 w-full animate-pulse rounded bg-neutral-200" />
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="h-12 w-full animate-pulse rounded bg-neutral-200" />
+              <div className="h-12 w-full animate-pulse rounded bg-neutral-200" />
+              <div className="h-12 w-full animate-pulse rounded bg-neutral-200" />
+              <p className="sr-only">読み込み中...</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  if (configError) {
+    return (
+      <div className="min-h-screen bg-neutral-50 px-4 py-6">
+        <div className="mx-auto w-full max-w-md">
+          <Card className="rounded-md border-[#F4A261]/30 bg-white shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-2xl leading-tight text-[#1D3557]">
+                あなたに合う働き方を見つけよう
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-red-600" role="alert">
+                {configError}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  if (questions.length === 0) {
+    return (
+      <div className="min-h-screen bg-neutral-50 px-4 py-6">
+        <div className="mx-auto w-full max-w-md">
+          <Card className="rounded-md border-[#F4A261]/30 bg-white shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-2xl leading-tight text-[#1D3557]">
+                あなたに合う働き方を見つけよう
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-neutral-600">No questions available.</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] via-[#FFFBF5] to-white px-4 py-6">
+    <div className="min-h-screen bg-neutral-50 px-4 py-6">
       <div className="mx-auto w-full max-w-md">
         <Card className="rounded-md border-[#F4A261]/30 bg-white shadow-sm">
           <CardHeader className="space-y-3">
@@ -184,7 +408,9 @@ function QuizContent() {
               <CardTitle className="text-2xl leading-tight text-[#1D3557]">
                 あなたに合う働き方を見つけよう
               </CardTitle>
-              <p className="mt-1 text-sm text-neutral-600">Dr. Stretch / Wecle</p>
+              <p className="mt-1 text-sm text-neutral-600">
+                {campaign?.name || "Dr. Stretch / Wecle"}
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -201,154 +427,18 @@ function QuizContent() {
           </CardHeader>
 
           <CardContent className="space-y-6">
-            {step === 1 && (
-              <div className="space-y-3">
-                <p className="text-base font-semibold text-[#1D3557]">
-                  スポーツ・フィットネスの経験は？
-                </p>
-                <div className="space-y-2">
-                  {sportsExpOptions.map((option) => (
-                    <label
-                      key={option.value}
-                      className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 text-sm transition-colors ${
-                        form.sports_exp === option.value
-                          ? "border-[#E63946] bg-[#E63946]/5 font-medium text-[#1D3557]"
-                          : "border-neutral-200 bg-white hover:border-[#E63946]/40"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="sports_exp"
-                        value={option.value}
-                        checked={form.sports_exp === option.value}
-                        onChange={() =>
-                          setForm((prev) => ({ ...prev, sports_exp: option.value }))
-                        }
-                        className="h-4 w-4 accent-[#E63946]"
-                      />
-                      <span>{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
+            {currentQuestion && renderQuestionInput(currentQuestion)}
 
-            {step === 2 && (
-              <div className="space-y-3">
-                <p className="text-base font-semibold text-[#1D3557]">
-                  興味のある分野は？
-                </p>
-                <div className="space-y-2">
-                  {interestOptions.map((option) => (
-                    <label
-                      key={option.value}
-                      className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 text-sm transition-colors ${
-                        form.interests.includes(option.value)
-                          ? "border-[#E63946] bg-[#E63946]/5 font-medium text-[#1D3557]"
-                          : "border-neutral-200 bg-white hover:border-[#E63946]/40"
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        value={option.value}
-                        checked={form.interests.includes(option.value)}
-                        onChange={() => toggleInterest(option.value)}
-                        className="h-4 w-4 accent-[#E63946]"
-                      />
-                      <span>{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {step === 3 && (
-              <div className="space-y-3">
-                <p className="text-base font-semibold text-[#1D3557]">希望エリアは？</p>
-                <Input
-                  value={form.area}
-                  onChange={(event) =>
-                    setForm((prev) => ({ ...prev, area: event.target.value }))
-                  }
-                  placeholder="例: 東京都渋谷区"
-                />
-              </div>
-            )}
-
-            {step === 4 && (
-              <div className="space-y-3">
-                <p className="text-base font-semibold text-[#1D3557]">年齢は？</p>
-                <div className="space-y-2">
-                  {ageOptions.map((option) => (
-                    <label
-                      key={option.value}
-                      className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 text-sm transition-colors ${
-                        form.age_range === option.value
-                          ? "border-[#E63946] bg-[#E63946]/5 font-medium text-[#1D3557]"
-                          : "border-neutral-200 bg-white hover:border-[#E63946]/40"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="age_range"
-                        value={option.value}
-                        checked={form.age_range === option.value}
-                        onChange={() =>
-                          setForm((prev) => ({ ...prev, age_range: option.value }))
-                        }
-                        className="h-4 w-4 accent-[#E63946]"
-                      />
-                      <span>{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {step === 5 && (
+            {step === totalSteps && (
               <div className="space-y-4">
-                <div className="space-y-3">
-                  <p className="text-base font-semibold text-[#1D3557]">
-                    いつから始められますか？
-                  </p>
-                  <div className="space-y-2">
-                    {timingOptions.map((option) => (
-                      <label
-                        key={option.value}
-                        className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-3 text-sm transition-colors ${
-                          form.start_timing === option.value
-                            ? "border-[#E63946] bg-[#E63946]/5 font-medium text-[#1D3557]"
-                            : "border-neutral-200 bg-white hover:border-[#E63946]/40"
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="start_timing"
-                          value={option.value}
-                          checked={form.start_timing === option.value}
-                          onChange={() =>
-                            setForm((prev) => ({
-                              ...prev,
-                              start_timing: option.value,
-                            }))
-                          }
-                          className="h-4 w-4 accent-[#E63946]"
-                        />
-                        <span>{option.label}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
                 <div className="space-y-3 rounded-md border border-[#F4A261]/40 bg-[#FFF9F2] p-3">
                   <div className="space-y-2">
                     <Label htmlFor="quiz-name">表示名</Label>
                     <Input
                       id="quiz-name"
-                      value={form.name}
-                      onChange={(event) =>
-                        setForm((prev) => ({ ...prev, name: event.target.value }))
-                      }
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                      aria-label="表示名"
                     />
                   </div>
                   <div className="space-y-2">
@@ -356,17 +446,20 @@ function QuizContent() {
                     <Input
                       id="quiz-email"
                       type="email"
-                      value={form.email}
-                      onChange={(event) =>
-                        setForm((prev) => ({ ...prev, email: event.target.value }))
-                      }
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      aria-label="メールアドレス"
                     />
                   </div>
                 </div>
               </div>
             )}
 
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {submitError && (
+              <p className="text-sm text-red-600" role="alert">
+                {submitError}
+              </p>
+            )}
 
             <div className="flex items-center justify-between pt-2">
               <Button
@@ -374,6 +467,7 @@ function QuizContent() {
                 variant="outline"
                 onClick={handleBack}
                 disabled={step === 1 || submitting}
+                aria-label="戻る"
               >
                 戻る
               </Button>
@@ -383,6 +477,7 @@ function QuizContent() {
                 onClick={() => void handleNextOrSubmit()}
                 disabled={!canProceed || submitting}
                 className="bg-[#E63946] hover:bg-[#C62F3B]"
+                aria-label={step === totalSteps ? "結果を見る" : "次へ"}
               >
                 {step === totalSteps ? "結果を見る" : "次へ"}
               </Button>
