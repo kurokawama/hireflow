@@ -214,6 +214,26 @@ export type {
   PostingLog,
 } from "./sns";
 
+// Re-export target list types
+export type {
+  TargetList,
+  TargetProfile,
+  PersonaCategory,
+  ProfileSource,
+  TargetProfileStatus,
+  YouTubeSearchResult,
+} from "./targets";
+
+// Re-export content strategy types
+export type {
+  ContentCalendar,
+  ContentTask,
+  CalendarEntry,
+  CalendarStatus,
+  TaskStatus,
+  ContentType,
+} from "./strategy";
+
 export interface TrainerPost {
   id: string;
   org_id: string;
