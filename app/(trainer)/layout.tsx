@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { Logo } from "@/components/logo";
 
 export default async function TrainerLayout({
   children,
@@ -32,7 +33,7 @@ export default async function TrainerLayout({
       {/* Simple header for trainer portal */}
       <header className="bg-white border-b px-4 py-3 flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-neutral-900">HireFlow</h1>
+          <Logo size="sm" />
           <p className="text-xs text-neutral-500">トレーナーポータル</p>
         </div>
         <span className="text-sm text-neutral-600">{member.display_name}</span>

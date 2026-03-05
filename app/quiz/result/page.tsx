@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { Logo } from "@/components/logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +18,7 @@ type CandidateSummary = {
   ai_score: number | null;
   matched_store_id: string | null;
   store_id: string | null;
+  campaign_id: string | null;
 };
 
 type StoreSummary = {
@@ -60,11 +62,12 @@ export default async function QuizResultPage({ searchParams }: QuizResultPagePro
 
   let candidate: CandidateSummary | null = null;
   let store: StoreSummary | null = null;
+  let campaignName: string | null = null;
 
   if (candidateId) {
     const { data: candidateData } = await supabase
       .from("candidates")
-      .select("id, ai_score, matched_store_id, store_id")
+      .select("id, ai_score, matched_store_id, store_id, campaign_id")
       .eq("id", candidateId)
       .maybeSingle();
 
@@ -79,6 +82,15 @@ export default async function QuizResultPage({ searchParams }: QuizResultPagePro
         .maybeSingle();
       store = (storeData as StoreSummary | null) ?? null;
     }
+
+    if (candidate?.campaign_id) {
+      const { data: campaignData } = await supabase
+        .from("quiz_campaigns")
+        .select("name")
+        .eq("id", candidate.campaign_id)
+        .maybeSingle();
+      campaignName = campaignData?.name ?? null;
+    }
   }
 
   const stars = scoreToStars(candidate?.ai_score);
@@ -88,9 +100,15 @@ export default async function QuizResultPage({ searchParams }: QuizResultPagePro
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFF7ED] via-[#FFFBF5] to-white px-4 py-8">
       <div className="mx-auto w-full max-w-xl space-y-6">
+        <div className="flex justify-center">
+          <Logo size="sm" />
+        </div>
         <h1 className="text-center text-2xl font-bold text-[#1D3557]">
           あなたにおすすめの店舗
         </h1>
+        <p className="text-center text-sm text-neutral-600">
+          {campaignName ?? "Dr. Stretch / Wecle"}
+        </p>
 
         <Card className="rounded-md border-[#F4A261]/30 bg-white shadow-sm">
           <CardHeader className="space-y-3">
