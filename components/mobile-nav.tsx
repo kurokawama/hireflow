@@ -13,9 +13,11 @@ import {
   Library,
   Users,
   BarChart3,
+  TrendingUp,
   Megaphone,
   Share2,
   Send,
+  Video,
   Link2,
   Settings,
   LogOut,
@@ -60,6 +62,12 @@ const navItems = [
     roles: ["admin", "hq_staff"] as RoleType[],
   },
   {
+    href: "/analytics/funnel",
+    label: "ファネル",
+    icon: TrendingUp,
+    roles: ["admin", "hq_staff"] as RoleType[],
+  },
+  {
     href: "/ads",
     label: "広告管理",
     icon: Megaphone,
@@ -81,6 +89,12 @@ const navItems = [
     href: "/settings/connections",
     label: "SNS接続管理",
     icon: Link2,
+    roles: ["admin", "hq_staff"] as RoleType[],
+  },
+  {
+    href: "/video",
+    label: "動画",
+    icon: Video,
     roles: ["admin", "hq_staff"] as RoleType[],
   },
   {
