@@ -80,12 +80,12 @@ export function PostingQueueTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Platform</TableHead>
-            <TableHead>Content</TableHead>
-            <TableHead>Account</TableHead>
-            <TableHead>Scheduled</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="w-[200px]">Actions</TableHead>
+            <TableHead>プラットフォーム</TableHead>
+            <TableHead>コンテンツ</TableHead>
+            <TableHead>アカウント</TableHead>
+            <TableHead>スケジュール</TableHead>
+            <TableHead>ステータス</TableHead>
+            <TableHead className="w-[200px]">操作</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
