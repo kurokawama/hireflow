@@ -254,6 +254,17 @@ export type {
   KitStatus,
 } from "./advocacy";
 
+// Re-export video types
+export type {
+  MediaFile,
+  VideoProject,
+  VideoProjectWithMedia,
+  VideoProjectStatus,
+  MediaFileType,
+  ShootingGuide,
+  EditConfig,
+} from "./video";
+
 export interface TrainerPost {
   id: string;
   org_id: string;
