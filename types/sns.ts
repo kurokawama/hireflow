@@ -74,3 +74,57 @@ export interface PostingLog {
   error_details: string | null;
   created_at: string;
 }
+
+// Phase C-2 — Extended types for UI display
+
+export interface PostingQueueWithContent extends PostingQueue {
+  content?: {
+    id: string;
+    body_text: string;
+    platform: string;
+    status: string;
+  };
+  connection?: {
+    id: string;
+    platform: SNSPlatform;
+    external_account_name: string | null;
+  };
+}
+
+export interface SNSPostRequest {
+  content_id: string;
+  connection_id: string;
+  platform: SNSPlatform;
+  scheduled_at?: string; // ISO8601 or null for immediate
+  media_urls?: string[];
+}
+
+export interface SNSPostResult {
+  success: boolean;
+  external_post_id?: string;
+  error?: string;
+  response_data?: Record<string, unknown>;
+}
+
+// OAuth config per platform
+export interface OAuthConfig {
+  platform: SNSPlatform;
+  client_id: string;
+  client_secret: string;
+  authorize_url: string;
+  token_url: string;
+  scopes: string[];
+  redirect_uri: string;
+}
+
+// Platform capabilities
+export interface PlatformCapability {
+  platform: SNSPlatform;
+  display_name: string;
+  icon: string;
+  supports_scheduling: boolean;
+  supports_media: boolean;
+  max_text_length: number;
+  requires_oauth: boolean;
+  api_available: boolean; // false = mock only
+}
