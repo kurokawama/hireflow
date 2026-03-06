@@ -16,7 +16,9 @@ import {
   BarChart3,
   Megaphone,
   Share2,
+  Send,
   Settings,
+  Link2,
   LogOut,
   User,
 } from "lucide-react";
@@ -80,6 +82,18 @@ const navItems = [
     label: "社員アドボカシー",
     icon: Share2,
     roles: ["admin", "hq_staff", "store_manager"] as RoleType[],
+  },
+  {
+    href: "/publishing",
+    label: "投稿管理",
+    icon: Send,
+    roles: ["admin", "hq_staff"] as RoleType[],
+  },
+  {
+    href: "/settings/connections",
+    label: "SNS接続管理",
+    icon: Link2,
+    roles: ["admin", "hq_staff"] as RoleType[],
   },
   {
     href: "/settings/stores",
