@@ -265,6 +265,16 @@ export type {
   EditConfig,
 } from "./video";
 
+// Re-export tracking types
+export type {
+  EntryTracking,
+  LineSettings,
+  FunnelMetrics,
+  FunnelSummary,
+  FunnelStep,
+  EntrySource,
+} from "./tracking";
+
 export interface TrainerPost {
   id: string;
   org_id: string;
