@@ -66,7 +66,7 @@ export function BulkIssueDialog({ onIssued }: BulkIssueDialogProps) {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        throw new Error("Unauthorized");
+        throw new Error("認証エラー");
       }
 
       const { data: member, error: memberError } = await supabase
@@ -76,7 +76,7 @@ export function BulkIssueDialog({ onIssued }: BulkIssueDialogProps) {
         .maybeSingle();
 
       if (memberError || !member?.org_id) {
-        throw new Error(memberError?.message || "Organization not found");
+        throw new Error(memberError?.message || "組織が見つかりません");
       }
 
       const { data, error: candidatesError } = await supabase
@@ -93,7 +93,7 @@ export function BulkIssueDialog({ onIssued }: BulkIssueDialogProps) {
       setCandidates((data ?? []) as CandidateOption[]);
     } catch (loadError) {
       setCandidates([]);
-      setError(loadError instanceof Error ? loadError.message : "Failed to load candidates.");
+      setError(loadError instanceof Error ? loadError.message : "候補者の読み込みに失敗しました");
     } finally {
       setIsLoadingCandidates(false);
     }
@@ -141,11 +141,11 @@ export function BulkIssueDialog({ onIssued }: BulkIssueDialogProps) {
     setError("");
 
     if (selectedCandidateIds.length === 0) {
-      setError("No candidates selected.");
+      setError("候補者を選択してください");
       return;
     }
     if (!Number.isFinite(expiryDays) || expiryDays < 1) {
-      setError("expiry_days must be at least 1.");
+      setError("有効日数は1以上にしてください");
       return;
     }
 
@@ -163,7 +163,7 @@ export function BulkIssueDialog({ onIssued }: BulkIssueDialogProps) {
         onIssued?.({ issued: issueResult.issued, failed: issueResult.failed });
       }
     } catch (issueError) {
-      setError(issueError instanceof Error ? issueError.message : "Failed to issue tickets.");
+      setError(issueError instanceof Error ? issueError.message : "チケット発行に失敗しました");
     } finally {
       setIsIssuing(false);
     }
@@ -183,29 +183,29 @@ export function BulkIssueDialog({ onIssued }: BulkIssueDialogProps) {
 
         <form className="space-y-4" onSubmit={(event) => void handleIssue(event)}>
           <div className="space-y-2">
-            <Label htmlFor="bulk-candidate-search">Candidates</Label>
+            <Label htmlFor="bulk-candidate-search">候補者</Label>
             <Input
               id="bulk-candidate-search"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search by name / email / phone"
+              placeholder="名前 / メール / 電話番号で検索"
             />
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <Button type="button" variant="outline" onClick={handleSelectAllFiltered}>
-              Select filtered
+              表示中を全選択
             </Button>
             <Button type="button" variant="outline" onClick={handleClearSelection}>
-              Clear
+              選択解除
             </Button>
-            <p className="text-sm text-neutral-600">selected: {selectedCandidateIds.length}</p>
+            <p className="text-sm text-neutral-600">選択済み: {selectedCandidateIds.length}</p>
           </div>
 
           <div className="max-h-64 space-y-2 overflow-y-auto rounded-md border border-neutral-200 p-3">
-            {isLoadingCandidates && <p className="text-sm text-neutral-600">Loading...</p>}
+            {isLoadingCandidates && <p className="text-sm text-neutral-600">読み込み中...</p>}
             {!isLoadingCandidates && filteredCandidates.length === 0 && (
-              <p className="text-sm text-neutral-600">No candidates</p>
+              <p className="text-sm text-neutral-600">候補者なし</p>
             )}
             {!isLoadingCandidates &&
               filteredCandidates.map((candidate) => (
@@ -230,7 +230,7 @@ export function BulkIssueDialog({ onIssued }: BulkIssueDialogProps) {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="bulk-ticket-type">Ticket Type</Label>
+              <Label htmlFor="bulk-ticket-type">チケットタイプ</Label>
               <Select value={ticketType} onValueChange={(value: TicketType) => setTicketType(value)}>
                 <SelectTrigger id="bulk-ticket-type">
                   <SelectValue />
@@ -245,7 +245,7 @@ export function BulkIssueDialog({ onIssued }: BulkIssueDialogProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="bulk-expiry-days">Expiry Days</Label>
+              <Label htmlFor="bulk-expiry-days">有効日数</Label>
               <Input
                 id="bulk-expiry-days"
                 type="number"
@@ -256,12 +256,12 @@ export function BulkIssueDialog({ onIssued }: BulkIssueDialogProps) {
             </div>
           </div>
 
-          {isIssuing && <p className="text-sm text-neutral-600">Issuing...</p>}
+          {isIssuing && <p className="text-sm text-neutral-600">発行中...</p>}
           {error && <p className="text-sm text-red-600">{error}</p>}
           {result && (
             <div className="rounded-md border border-neutral-200 bg-neutral-50 p-3 text-sm text-[#1D3557]">
-              <p>issued: {result.issued}</p>
-              <p>failed: {result.failed}</p>
+              <p>発行済み: {result.issued}</p>
+              <p>失敗: {result.failed}</p>
               {result.error && <p className="text-red-600">{result.error}</p>}
             </div>
           )}

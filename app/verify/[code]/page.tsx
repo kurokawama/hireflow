@@ -121,7 +121,7 @@ export default function VerifyTicketPage() {
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-md border-neutral-200 bg-white">
         <CardContent className="space-y-4 p-6">
-          {isLoading && <p className="text-sm text-neutral-600">Loading...</p>}
+          {isLoading && <p className="text-sm text-neutral-600">読み込み中...</p>}
 
           {!isLoading && error && (
             <p className="text-sm text-red-600">{error === "チケットが見つかりません" ? "チケットが見つかりません" : error}</p>
@@ -137,10 +137,10 @@ export default function VerifyTicketPage() {
               </div>
 
               <div className="space-y-1 text-sm text-neutral-600">
-                <p>issued_at: {new Date(ticket.issued_at).toLocaleString("ja-JP")}</p>
-                <p>expires_at: {new Date(ticket.expires_at).toLocaleString("ja-JP")}</p>
+                <p>発行日: {new Date(ticket.issued_at).toLocaleString("ja-JP")}</p>
+                <p>有効期限: {new Date(ticket.expires_at).toLocaleString("ja-JP")}</p>
                 {ticket.status === "redeemed" && ticket.redeemed_at && (
-                  <p>redeemed_at: {new Date(ticket.redeemed_at).toLocaleString("ja-JP")}</p>
+                  <p>使用日: {new Date(ticket.redeemed_at).toLocaleString("ja-JP")}</p>
                 )}
               </div>
 

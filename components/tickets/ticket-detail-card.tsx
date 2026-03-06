@@ -12,6 +12,13 @@ interface TicketDetailCardProps {
   ticket: TicketWithCandidate;
 }
 
+const statusLabelMap: Record<TicketStatus, string> = {
+  issued: "発行済み",
+  redeemed: "使用済み",
+  expired: "期限切れ",
+  cancelled: "キャンセル",
+};
+
 const statusClassMap: Record<TicketStatus, string> = {
   issued: "rounded-full bg-blue-100 text-blue-700",
   redeemed: "rounded-full bg-green-100 text-green-700",
@@ -59,48 +66,48 @@ export function TicketDetailCard({ ticket }: TicketDetailCardProps) {
   return (
     <Card className="rounded-md border-neutral-200">
       <CardHeader>
-        <CardTitle className="text-[#1D3557]">Ticket</CardTitle>
+        <CardTitle className="text-[#1D3557]">チケット情報</CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="space-y-2">
-          <p className="text-xs text-neutral-600">Code</p>
+          <p className="text-xs text-neutral-600">チケットコード</p>
           <p className="font-mono text-sm text-[#1D3557]">{ticket.ticket_code}</p>
         </div>
 
         <div className="space-y-2">
-          <p className="text-xs text-neutral-600">Type</p>
+          <p className="text-xs text-neutral-600">チケットタイプ</p>
           <p className="text-sm text-neutral-700">{typeLabelMap[ticket.ticket_type]}</p>
         </div>
 
         <div className="space-y-2">
-          <p className="text-xs text-neutral-600">Status</p>
-          <Badge className={statusClassMap[ticket.status]}>{ticket.status}</Badge>
+          <p className="text-xs text-neutral-600">ステータス</p>
+          <Badge className={statusClassMap[ticket.status]}>{statusLabelMap[ticket.status]}</Badge>
         </div>
 
         <Separator />
 
         <div className="space-y-2">
-          <p className="text-xs text-neutral-600">Issued</p>
+          <p className="text-xs text-neutral-600">発行日</p>
           <p className="text-sm text-neutral-700">{formatDateTime(ticket.issued_at)}</p>
         </div>
         <div className="space-y-2">
-          <p className="text-xs text-neutral-600">Expires</p>
+          <p className="text-xs text-neutral-600">有効期限</p>
           <p className="text-sm text-neutral-700">{formatDateTime(ticket.expires_at)}</p>
         </div>
         <div className="space-y-2">
-          <p className="text-xs text-neutral-600">Redeemed</p>
+          <p className="text-xs text-neutral-600">使用日</p>
           <p className="text-sm text-neutral-700">{formatDateTime(ticket.redeemed_at)}</p>
         </div>
 
         <Separator />
 
         <div className="space-y-3">
-          <p className="text-xs text-neutral-600">QR</p>
+          <p className="text-xs text-neutral-600">QRコード</p>
           <div className="flex h-48 w-48 items-center justify-center rounded-md border border-neutral-200 bg-white">
             {qrImageSrc ? (
               <Image src={qrImageSrc} alt="QR Code" width={192} height={192} />
             ) : (
-              <p className="text-xs text-neutral-500">QR unavailable</p>
+              <p className="text-xs text-neutral-500">QRコード未生成</p>
             )}
           </div>
         </div>

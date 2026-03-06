@@ -18,22 +18,22 @@ export function TicketStatsCards({ stats, isLoading }: TicketStatsCardsProps) {
   const items: StatItem[] = [
     {
       key: "total",
-      label: "total",
+      label: "合計",
       value: String(stats?.total ?? 0),
     },
     {
       key: "issued",
-      label: "issued",
+      label: "発行済み",
       value: String(stats?.issued ?? 0),
     },
     {
       key: "redeemed",
-      label: "redeemed",
+      label: "使用済み",
       value: String(stats?.redeemed ?? 0),
     },
     {
       key: "redemption_rate",
-      label: "redemption_rate",
+      label: "使用率",
       value: `${(stats?.redemption_rate ?? 0).toFixed(1)}%`,
     },
   ];

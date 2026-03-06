@@ -24,7 +24,7 @@ export default function TicketDetailPage() {
       const result = await getTicketByCodeAction(params.id);
       if (result.error || !result.data) {
         setTicket(null);
-        setErrorMessage(result.error ?? "Ticket not found.");
+        setErrorMessage(result.error ?? "チケットが見つかりません");
       } else {
         setTicket(result.data);
       }
@@ -38,13 +38,13 @@ export default function TicketDetailPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-start justify-between">
-        <h1 className="text-2xl font-bold text-[#1D3557]">チケット管理</h1>
+        <h1 className="text-2xl font-bold text-[#1D3557]">チケット詳細</h1>
         <Button asChild variant="outline" className="border-neutral-200">
-          <Link href="/tickets">Back</Link>
+          <Link href="/tickets">戻る</Link>
         </Button>
       </div>
 
-      {isLoading ? <p className="text-sm text-neutral-600">Loading...</p> : null}
+      {isLoading ? <p className="text-sm text-neutral-600">読み込み中...</p> : null}
       {!isLoading && errorMessage ? <p className="text-sm text-red-700">{errorMessage}</p> : null}
 
       {!isLoading && ticket ? (
@@ -53,31 +53,31 @@ export default function TicketDetailPage() {
 
           <Card className="rounded-md border-neutral-200">
             <CardHeader>
-              <CardTitle className="text-[#1D3557]">Candidate / Visitor</CardTitle>
+              <CardTitle className="text-[#1D3557]">候補者 / 来店者情報</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6 text-sm">
               <div className="space-y-3">
-                <p className="font-semibold text-[#1D3557]">Candidate</p>
+                <p className="font-semibold text-[#1D3557]">候補者情報</p>
                 <div className="space-y-2 text-neutral-700">
-                  <p>Name: {ticket.candidates?.name ?? "-"}</p>
-                  <p>Email: {ticket.candidates?.email ?? "-"}</p>
-                  <p>Phone: {ticket.candidates?.phone ?? "-"}</p>
-                  <p>LINE User ID: {ticket.candidates?.line_user_id ?? "-"}</p>
-                  <p>Score: {ticket.candidates?.ai_score ?? "-"}</p>
-                  <p>Stage: {ticket.candidates?.stage ?? "-"}</p>
+                  <p>名前: {ticket.candidates?.name ?? "-"}</p>
+                  <p>メール: {ticket.candidates?.email ?? "-"}</p>
+                  <p>電話番号: {ticket.candidates?.phone ?? "-"}</p>
+                  <p>LINE ID: {ticket.candidates?.line_user_id ?? "-"}</p>
+                  <p>スコア: {ticket.candidates?.ai_score ?? "-"}</p>
+                  <p>ステージ: {ticket.candidates?.stage ?? "-"}</p>
                 </div>
               </div>
 
               <Separator />
 
               <div className="space-y-3">
-                <p className="font-semibold text-[#1D3557]">Visitor</p>
+                <p className="font-semibold text-[#1D3557]">来店者情報</p>
                 <div className="space-y-2 text-neutral-700">
-                  <p>Name: {ticket.visitor_info?.name ?? "-"}</p>
-                  <p>Phone: {ticket.visitor_info?.phone ?? "-"}</p>
-                  <p>Email: {ticket.visitor_info?.email ?? "-"}</p>
-                  <p>Address: {ticket.visitor_info?.address ?? "-"}</p>
-                  <p>Notes: {ticket.visitor_info?.notes ?? "-"}</p>
+                  <p>名前: {ticket.visitor_info?.name ?? "-"}</p>
+                  <p>電話番号: {ticket.visitor_info?.phone ?? "-"}</p>
+                  <p>メール: {ticket.visitor_info?.email ?? "-"}</p>
+                  <p>住所: {ticket.visitor_info?.address ?? "-"}</p>
+                  <p>備考: {ticket.visitor_info?.notes ?? "-"}</p>
                 </div>
               </div>
             </CardContent>

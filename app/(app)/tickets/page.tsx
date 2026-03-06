@@ -43,7 +43,7 @@ export default function TicketsPage() {
     ]);
 
     if (statsResult.error || ticketsResult.error) {
-      setErrorMessage(statsResult.error ?? ticketsResult.error ?? "Failed to load data.");
+      setErrorMessage(statsResult.error ?? ticketsResult.error ?? "データの読み込みに失敗しました");
       setStats(statsResult.data);
       setTickets(ticketsResult.data);
     } else {
@@ -77,13 +77,13 @@ export default function TicketsPage() {
         <div className="flex items-center gap-2">
           <TicketIssueDialog
             candidates={candidateOptions}
-            triggerLabel="Issue Ticket"
+            triggerLabel="チケット発行"
             onIssued={() => {
               void loadData(statusFilter, false);
             }}
           />
           <Button asChild variant="outline" className="border-neutral-200">
-            <Link href="/tickets/new">Open Form</Link>
+            <Link href="/tickets/new">発行フォーム</Link>
           </Button>
         </div>
       </div>
@@ -91,18 +91,18 @@ export default function TicketsPage() {
       <TicketStatsCards stats={stats} isLoading={isLoading} />
 
       <div className="flex items-center justify-between gap-3">
-        <p className="text-sm text-neutral-600">Status</p>
+        <p className="text-sm text-neutral-600">ステータス</p>
         <div className="w-full max-w-xs">
           <Select value={statusFilter} onValueChange={(value: StatusFilter) => setStatusFilter(value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">all</SelectItem>
-              <SelectItem value="issued">issued</SelectItem>
-              <SelectItem value="redeemed">redeemed</SelectItem>
-              <SelectItem value="expired">expired</SelectItem>
-              <SelectItem value="cancelled">cancelled</SelectItem>
+              <SelectItem value="all">すべて</SelectItem>
+              <SelectItem value="issued">発行済み</SelectItem>
+              <SelectItem value="redeemed">使用済み</SelectItem>
+              <SelectItem value="expired">期限切れ</SelectItem>
+              <SelectItem value="cancelled">キャンセル</SelectItem>
             </SelectContent>
           </Select>
         </div>

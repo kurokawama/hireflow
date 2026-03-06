@@ -41,7 +41,7 @@ const typeLabelMap: Record<TicketType, string> = {
 
 export function TicketIssueDialog({
   candidates,
-  triggerLabel = "Issue Ticket",
+  triggerLabel = "チケット発行",
   onIssued,
 }: TicketIssueDialogProps) {
   const [open, setOpen] = useState(false);
@@ -55,7 +55,7 @@ export function TicketIssueDialog({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!candidateId) {
-      setErrorMessage("Candidate is required.");
+      setErrorMessage("候補者を選択してください");
       return;
     }
 
@@ -71,7 +71,7 @@ export function TicketIssueDialog({
       });
 
       if (result.error || !result.data) {
-        setErrorMessage(result.error ?? "Failed to issue ticket.");
+        setErrorMessage(result.error ?? "チケット発行に失敗しました");
         return;
       }
 
@@ -92,26 +92,26 @@ export function TicketIssueDialog({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-[#1D3557]">Issue Ticket</DialogTitle>
-          <DialogDescription>Select candidate, type and expiry days.</DialogDescription>
+          <DialogTitle className="text-[#1D3557]">チケット発行</DialogTitle>
+          <DialogDescription>候補者、チケットタイプ、有効日数を選択してください。</DialogDescription>
         </DialogHeader>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
-            <Label htmlFor="candidateIdInput">Candidate ID</Label>
+            <Label htmlFor="candidateIdInput">候補者ID</Label>
             <Input
               id="candidateIdInput"
               value={candidateId}
               onChange={(event) => setCandidateId(event.target.value)}
-              placeholder="Candidate ID"
+              placeholder="候補者IDを入力"
             />
           </div>
 
           {hasCandidates ? (
             <div className="space-y-2">
-              <Label htmlFor="candidateId">Candidate</Label>
+              <Label htmlFor="candidateId">候補者</Label>
               <Select value={candidateId} onValueChange={setCandidateId}>
                 <SelectTrigger id="candidateId">
-                  <SelectValue placeholder="Select candidate" />
+                  <SelectValue placeholder="候補者を選択" />
                 </SelectTrigger>
                 <SelectContent>
                   {candidates.map((candidate) => (
@@ -125,7 +125,7 @@ export function TicketIssueDialog({
           ) : null}
 
           <div className="space-y-2">
-            <Label htmlFor="ticketType">Ticket Type</Label>
+            <Label htmlFor="ticketType">チケットタイプ</Label>
             <Select
               value={ticketType}
               onValueChange={(value: TicketType) => setTicketType(value)}
@@ -143,7 +143,7 @@ export function TicketIssueDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="expiryDays">Expiry Days</Label>
+            <Label htmlFor="expiryDays">有効日数</Label>
             <Input
               id="expiryDays"
               type="number"
@@ -157,7 +157,7 @@ export function TicketIssueDialog({
 
           <DialogFooter>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Issue"}
+              {isSubmitting ? "発行中..." : "発行"}
             </Button>
           </DialogFooter>
         </form>

@@ -64,7 +64,7 @@ export default function NewTicketPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!candidateId) {
-      setErrorMessage("Candidate is required.");
+      setErrorMessage("候補者を選択してください");
       return;
     }
 
@@ -80,7 +80,7 @@ export default function NewTicketPage() {
       });
 
       if (result.error || !result.data) {
-        setErrorMessage(result.error ?? "Failed to issue ticket.");
+        setErrorMessage(result.error ?? "チケット発行に失敗しました");
         return;
       }
 
@@ -93,34 +93,34 @@ export default function NewTicketPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-start justify-between">
-        <h1 className="text-2xl font-bold text-[#1D3557]">チケット管理</h1>
+        <h1 className="text-2xl font-bold text-[#1D3557]">チケット手動発行</h1>
         <Button asChild variant="outline" className="border-neutral-200">
-          <Link href="/tickets">Back</Link>
+          <Link href="/tickets">戻る</Link>
         </Button>
       </div>
 
       <Card className="rounded-md border-neutral-200">
         <CardHeader>
-          <CardTitle className="text-[#1D3557]">Manual Issue</CardTitle>
+          <CardTitle className="text-[#1D3557]">手動発行</CardTitle>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="space-y-2">
-              <Label htmlFor="candidateIdInput">Candidate ID</Label>
+              <Label htmlFor="candidateIdInput">候補者ID</Label>
               <Input
                 id="candidateIdInput"
                 value={candidateId}
                 onChange={(event) => setCandidateId(event.target.value)}
-                placeholder="Candidate ID"
+                placeholder="候補者IDを入力"
               />
             </div>
 
             {hasCandidates ? (
               <div className="space-y-2">
-                <Label htmlFor="candidate">Candidate</Label>
+                <Label htmlFor="candidate">候補者</Label>
                 <Select value={candidateId} onValueChange={setCandidateId} disabled={isLoading}>
                   <SelectTrigger id="candidate">
-                    <SelectValue placeholder="Select candidate" />
+                    <SelectValue placeholder="候補者を選択" />
                   </SelectTrigger>
                   <SelectContent>
                     {candidateOptions.map((candidate) => (
@@ -134,7 +134,7 @@ export default function NewTicketPage() {
             ) : null}
 
             <div className="space-y-2">
-              <Label htmlFor="ticketType">Ticket Type</Label>
+              <Label htmlFor="ticketType">チケットタイプ</Label>
               <Select
                 value={ticketType}
                 onValueChange={(value: TicketType) => setTicketType(value)}
@@ -152,7 +152,7 @@ export default function NewTicketPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="expiryDays">Expiry Days</Label>
+              <Label htmlFor="expiryDays">有効日数</Label>
               <Input
                 id="expiryDays"
                 type="number"
@@ -169,7 +169,7 @@ export default function NewTicketPage() {
               className="bg-[#1D3557] text-white hover:bg-[#1D3557]/90"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Submitting..." : "Issue Ticket"}
+              {isSubmitting ? "発行中..." : "チケット発行"}
             </Button>
           </form>
         </CardContent>

@@ -116,9 +116,9 @@ export default function TicketSettingsPage() {
     });
 
     if (result.error || !result.data) {
-      setErrorMessage(result.error ?? "Failed to save settings.");
+      setErrorMessage(result.error ?? "保存に失敗しました");
     } else {
-      setSuccessMessage("Saved.");
+      setSuccessMessage("保存しました");
     }
 
     setIsSaving(false);
@@ -159,19 +159,19 @@ export default function TicketSettingsPage() {
         </Link>
       </div>
 
-      <h1 className="text-2xl font-bold text-[#1D3557]">チケット管理</h1>
+      <h1 className="text-2xl font-bold text-[#1D3557]">チケット自動発行設定</h1>
 
       <Card className="rounded-md border-neutral-200">
         <CardHeader>
-          <CardTitle className="text-[#1D3557]">Auto Issue Settings</CardTitle>
+          <CardTitle className="text-[#1D3557]">自動発行設定</CardTitle>
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <p className="text-sm text-neutral-600">Loading...</p>
+            <p className="text-sm text-neutral-600">読み込み中...</p>
           ) : (
             <form className="space-y-4" onSubmit={handleSave}>
               <div className="space-y-2">
-                <Label htmlFor="score_threshold">threshold</Label>
+                <Label htmlFor="score_threshold">スコア閾値</Label>
                 <Input
                   id="score_threshold"
                   type="number"
@@ -183,7 +183,7 @@ export default function TicketSettingsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="ticket_type">ticket_type</Label>
+                <Label htmlFor="ticket_type">チケットタイプ</Label>
                 <Select
                   value={ticketType}
                   onValueChange={(value: TicketType) => setTicketType(value)}
@@ -201,7 +201,7 @@ export default function TicketSettingsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="expiry_days">expiry_days</Label>
+                <Label htmlFor="expiry_days">有効日数</Label>
                 <Input
                   id="expiry_days"
                   type="number"
@@ -212,7 +212,7 @@ export default function TicketSettingsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="line_message">line_message</Label>
+                <Label htmlFor="line_message">LINE配信メッセージ</Label>
                 <Textarea
                   id="line_message"
                   value={lineMessage}
@@ -222,7 +222,7 @@ export default function TicketSettingsPage() {
               </div>
 
               <div className="flex items-center justify-between rounded-md border border-neutral-200 p-3">
-                <Label htmlFor="auto_issue">auto_issue</Label>
+                <Label htmlFor="auto_issue">自動発行</Label>
                 <ToggleSwitch
                   id="auto_issue"
                   checked={autoIssue}
@@ -231,7 +231,7 @@ export default function TicketSettingsPage() {
               </div>
 
               <div className="flex items-center justify-between rounded-md border border-neutral-200 p-3">
-                <Label htmlFor="is_active">is_active</Label>
+                <Label htmlFor="is_active">有効</Label>
                 <ToggleSwitch
                   id="is_active"
                   checked={isActive}
@@ -247,7 +247,7 @@ export default function TicketSettingsPage() {
                 disabled={isSaving}
                 className="bg-[#1D3557] text-white hover:bg-[#1D3557]/90"
               >
-                {isSaving ? "Saving..." : "Save"}
+                {isSaving ? "保存中..." : "保存"}
               </Button>
             </form>
           )}

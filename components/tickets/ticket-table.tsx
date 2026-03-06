@@ -18,6 +18,13 @@ interface TicketTableProps {
   isLoading: boolean;
 }
 
+const statusLabelMap: Record<TicketStatus, string> = {
+  issued: "発行済み",
+  redeemed: "使用済み",
+  expired: "期限切れ",
+  cancelled: "キャンセル",
+};
+
 const statusClassMap: Record<TicketStatus, string> = {
   issued: "rounded-full bg-blue-100 text-blue-700",
   redeemed: "rounded-full bg-green-100 text-green-700",
@@ -54,13 +61,13 @@ export function TicketTable({ tickets, isLoading }: TicketTableProps) {
           {isLoading ? (
             <TableRow>
               <TableCell colSpan={7} className="text-center text-sm text-neutral-600">
-                Loading...
+                読み込み中...
               </TableCell>
             </TableRow>
           ) : tickets.length === 0 ? (
             <TableRow>
               <TableCell colSpan={7} className="text-center text-sm text-neutral-600">
-                No data
+                データなし
               </TableCell>
             </TableRow>
           ) : (
@@ -70,13 +77,13 @@ export function TicketTable({ tickets, isLoading }: TicketTableProps) {
                 <TableCell className="text-sm">{ticket.candidates?.name ?? "-"}</TableCell>
                 <TableCell className="text-sm">{typeLabelMap[ticket.ticket_type]}</TableCell>
                 <TableCell>
-                  <Badge className={statusClassMap[ticket.status]}>{ticket.status}</Badge>
+                  <Badge className={statusClassMap[ticket.status]}>{statusLabelMap[ticket.status]}</Badge>
                 </TableCell>
                 <TableCell className="text-sm">{formatDate(ticket.issued_at)}</TableCell>
                 <TableCell className="text-sm">{formatDate(ticket.expires_at)}</TableCell>
                 <TableCell>
                   <Button asChild variant="outline" size="sm" className="border-neutral-200">
-                    <Link href={`/tickets/${ticket.ticket_code}`}>Detail</Link>
+                    <Link href={`/tickets/${ticket.ticket_code}`}>詳細</Link>
                   </Button>
                 </TableCell>
               </TableRow>
