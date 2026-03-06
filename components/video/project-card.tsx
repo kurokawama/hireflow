@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { VideoProjectStatus, VideoProjectWithMedia } from "@/types/video";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,11 +52,11 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
         <CardHeader className="space-y-3">
           <div
             className={cn(
-              "flex h-40 items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-neutral-100 text-sm text-neutral-500",
+              "relative flex h-40 items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-neutral-100 text-sm text-neutral-500",
             )}
           >
             {thumbnail ? (
-              <img src={thumbnail} alt={`${project.title} サムネイル`} className="h-full w-full object-cover" />
+              <Image src={thumbnail} alt={`${project.title} サムネイル`} className="h-full w-full object-cover" fill sizes="(max-width: 768px) 100vw, 33vw" />
             ) : (
               <span>サムネイルなし</span>
             )}
