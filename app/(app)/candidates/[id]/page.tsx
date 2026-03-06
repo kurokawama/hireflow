@@ -16,6 +16,8 @@ interface CandidateDetailPageProps {
 const candidateStages: CandidateStage[] = [
   "quiz_completed",
   "line_followed",
+  "ticket_issued",
+  "ticket_redeemed",
   "contacted",
   "applied",
   "interviewed",
@@ -26,6 +28,8 @@ const candidateStages: CandidateStage[] = [
 const stageColorMap: Record<CandidateStage, string> = {
   quiz_completed: "bg-neutral-100 text-neutral-700 border-transparent",
   line_followed: "bg-cyan-100 text-cyan-800 border-transparent",
+  ticket_issued: "bg-amber-100 text-amber-800 border-transparent",
+  ticket_redeemed: "bg-teal-100 text-teal-800 border-transparent",
   contacted: "bg-indigo-100 text-indigo-800 border-transparent",
   applied: "bg-blue-100 text-blue-800 border-transparent",
   interviewed: "bg-purple-100 text-purple-800 border-transparent",

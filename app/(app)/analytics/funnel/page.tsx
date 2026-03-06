@@ -24,6 +24,8 @@ const EMPTY_SUMMARY: FunnelSummary = {
   quiz_start: 0,
   quiz_complete: 0,
   line_follow: 0,
+  ticket_issued: 0,
+  ticket_redeemed: 0,
   interview_book: 0,
   conversion_rate: 0,
 };
@@ -34,6 +36,8 @@ const STEPS: FunnelStep[] = [
   "quiz_start",
   "quiz_complete",
   "line_follow",
+  "ticket_issued",
+  "ticket_redeemed",
   "interview_book",
 ];
 

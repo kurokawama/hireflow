@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { scoreCandidate } from "@/lib/ai/scoring";
 import { scoreCandidateDynamic } from "@/lib/ai/dynamic-scoring";
 import { getScoringWeights } from "@/lib/actions/scoring-profiles";
+import { runAutoTicketWorkflow } from "@/lib/tickets/auto-workflow";
 import type { QuizResultResponse } from "@/types/dto";
 
 interface QuizSubmitBody {
@@ -123,6 +124,11 @@ export async function POST(request: NextRequest) {
       event: "quiz_completed",
       metadata: { score: scoreResult.score, factors: scoreResult.factors },
     });
+
+    // Trigger auto-ticket workflow (non-blocking)
+    runAutoTicketWorkflow(candidate.id).catch((err) =>
+      console.error("Auto-ticket workflow error:", err)
+    );
 
     const response: QuizResultResponse = {
       candidate_id: candidate.id,

@@ -3,7 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { AdCampaign, AdPlatform, AdStatus } from "@/types/ads";
-import { BadgeCheck, CirclePause, CircleX, Facebook, Search, Twitter } from "lucide-react";
+import { BadgeCheck, CirclePause, CircleX, Facebook, MessageCircle, Search, Twitter } from "lucide-react";
 
 interface CampaignCardProps {
   campaign: AdCampaign;
@@ -27,6 +27,11 @@ const platformMeta: Record<
     label: "X",
     icon: Twitter,
     iconClass: "text-[#1D3557]",
+  },
+  line: {
+    label: "LINE",
+    icon: MessageCircle,
+    iconClass: "text-[#06C755]",
   },
 };
 

@@ -18,6 +18,7 @@ import {
   Share2,
   Send,
   Video,
+  Ticket,
   Link2,
   Settings,
   LogOut,
@@ -96,6 +97,12 @@ const navItems = [
     label: "動画",
     icon: Video,
     roles: ["admin", "hq_staff"] as RoleType[],
+  },
+  {
+    href: "/tickets",
+    label: "チケット管理",
+    icon: Ticket,
+    roles: ["admin", "hq_staff", "store_manager"] as RoleType[],
   },
   {
     href: "/settings/stores",

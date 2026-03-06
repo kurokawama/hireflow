@@ -1,6 +1,6 @@
 // Ad campaign and audience types — Full Auto Pipeline
 
-export type AdPlatform = "meta" | "google" | "x";
+export type AdPlatform = "meta" | "google" | "x" | "line";
 
 export type AdStatus =
   | "draft"

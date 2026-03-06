@@ -6,6 +6,8 @@ export type FunnelStep =
   | "quiz_start"
   | "quiz_complete"
   | "line_follow"
+  | "ticket_issued"
+  | "ticket_redeemed"
   | "interview_book";
 
 export type EntrySource =
@@ -57,6 +59,8 @@ export interface FunnelSummary {
   quiz_start: number;
   quiz_complete: number;
   line_follow: number;
+  ticket_issued: number;
+  ticket_redeemed: number;
   interview_book: number;
   conversion_rate: number; // impression → interview_book %
 }

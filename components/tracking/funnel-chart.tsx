@@ -7,9 +7,11 @@ interface FunnelChartProps {
 const STEP_CONFIG: Array<{ key: FunnelStep; label: string; color: string }> = [
   { key: "impression", label: "インプレッション", color: "#C7D3E3" },
   { key: "click", label: "クリック", color: "#A5B8D2" },
-  { key: "quiz_start", label: "クイズ開始", color: "#829CBE" },
-  { key: "quiz_complete", label: "クイズ完了", color: "#5F80AA" },
-  { key: "line_follow", label: "LINEフォロー", color: "#3D6495" },
+  { key: "quiz_start", label: "クイズ開始", color: "#93AACC" },
+  { key: "quiz_complete", label: "クイズ完了", color: "#829CBE" },
+  { key: "line_follow", label: "LINEフォロー", color: "#6D8BB0" },
+  { key: "ticket_issued", label: "チケット発行", color: "#5F80AA" },
+  { key: "ticket_redeemed", label: "チケット使用", color: "#3D6495" },
   { key: "interview_book", label: "面接予約", color: "#1D3557" },
 ];
 

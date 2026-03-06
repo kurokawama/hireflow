@@ -24,6 +24,8 @@ const stepLabelMap: Record<FunnelStep, string> = {
   quiz_start: "クイズ開始",
   quiz_complete: "クイズ完了",
   line_follow: "LINEフォロー",
+  ticket_issued: "チケット発行",
+  ticket_redeemed: "チケット使用",
   interview_book: "面接予約",
 };
 

@@ -8,6 +8,8 @@ const FUNNEL_ORDER: FunnelStep[] = [
   "quiz_start",
   "quiz_complete",
   "line_follow",
+  "ticket_issued",
+  "ticket_redeemed",
   "interview_book",
 ];
 
@@ -34,6 +36,8 @@ export async function getFunnelSummary(
       quiz_start: 0,
       quiz_complete: 0,
       line_follow: 0,
+      ticket_issued: 0,
+      ticket_redeemed: 0,
       interview_book: 0,
       conversion_rate: 0,
     };
@@ -59,6 +63,8 @@ export async function getFunnelSummary(
     quiz_start: counts.quiz_start,
     quiz_complete: counts.quiz_complete,
     line_follow: counts.line_follow,
+    ticket_issued: counts.ticket_issued,
+    ticket_redeemed: counts.ticket_redeemed,
     interview_book: counts.interview_book,
     conversion_rate: Math.round((interviews / impressions) * 10000) / 100,
   };

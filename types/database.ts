@@ -21,6 +21,8 @@ export type Channel = "organic" | "meta_ad" | "line" | "google" | "direct";
 export type CandidateStage =
   | "quiz_completed"
   | "line_followed"
+  | "ticket_issued"
+  | "ticket_redeemed"
   | "contacted"
   | "applied"
   | "interviewed"
@@ -274,6 +276,21 @@ export type {
   FunnelStep,
   EntrySource,
 } from "./tracking";
+
+// Re-export ticket types
+export type {
+  ExperienceTicket,
+  TicketSettings,
+  TicketWithCandidate,
+  TicketStats,
+  TicketStatus,
+  TicketType,
+  TicketIssuedVia,
+  VisitorInfo,
+  CreateTicketRequest,
+  RedeemTicketRequest,
+  BulkIssueRequest,
+} from "./tickets";
 
 export interface TrainerPost {
   id: string;
