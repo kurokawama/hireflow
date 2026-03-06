@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { trackFunnelEvent } from "@/lib/tracking/funnel";
 
 export async function GET(request: NextRequest) {
   try {
@@ -50,6 +51,24 @@ export async function GET(request: NextRequest) {
       brand: campaign.brand,
       questions,
     };
+
+    // Track quiz_start funnel event (non-blocking)
+    // Get org_id from the campaign's related data
+    const { data: org } = await supabase
+      .from("organizations")
+      .select("id")
+      .single();
+
+    if (org) {
+      trackFunnelEvent({
+        org_id: org.id,
+        funnel_step: "quiz_start",
+        entry_source: "direct",
+        metadata: { campaign_id: campaign.id, campaign_name: campaign.name },
+      }).catch((err) =>
+        console.error("Funnel tracking error:", err)
+      );
+    }
 
     return NextResponse.json({ data: response });
   } catch (err) {

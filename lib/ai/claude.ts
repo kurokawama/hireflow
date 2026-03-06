@@ -3,7 +3,7 @@ import type { Profile, Store, StaffVoice, PromptTemplate } from "@/types/databas
 import type { Platform } from "@/types/database";
 
 const anthropic = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 interface GenerateContentInput {

@@ -6,7 +6,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import type { KitHint } from "@/types/advocacy";
 
 const anthropic = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 const SYSTEM_PROMPT = `You are a social media content strategist for a Japanese fitness company (Dr.Stretch / Wecle brands).

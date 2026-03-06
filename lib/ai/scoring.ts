@@ -19,11 +19,26 @@ interface ScoreResult {
   };
 }
 
+// Target areas where Dr.Stretch / Wecle stores operate
+const TARGET_AREAS = [
+  "東京", "渋谷", "新宿", "池袋", "品川", "目黒", "世田谷", "港区", "中央区",
+  "横浜", "川崎", "大宮", "千葉", "船橋", "柏",
+  "大阪", "梅田", "難波", "心斎橋", "天王寺",
+  "名古屋", "栄", "福岡", "天神", "博多",
+  "札幌", "仙台", "広島", "京都", "神戸",
+];
+
+// Adjacent/commutable areas (partial match)
+const COMMUTABLE_AREAS = [
+  "埼玉", "神奈川", "千葉県", "茨城", "栃木",
+  "兵庫", "奈良", "滋賀", "愛知", "岐阜",
+];
+
 export function scoreCandidate(answers: QuizAnswers): ScoreResult {
   const factors = {
     sports_match: scoreSportsExp(answers.sports_exp),
     age_match: scoreAgeRange(answers.age_range),
-    area_match: 15, // Default — would need store proximity check
+    area_match: scoreArea(answers.area),
     urgency: scoreUrgency(answers.start_timing),
     interest_match: scoreInterests(answers.interests),
   };
@@ -61,6 +76,25 @@ function scoreAgeRange(range: string): number {
     default:
       return 5;
   }
+}
+
+function scoreArea(area: string): number {
+  if (!area || area.trim() === "") return 5;
+
+  const normalized = area.trim();
+
+  // Exact match with target area
+  if (TARGET_AREAS.some((t) => normalized.includes(t) || t.includes(normalized))) {
+    return 20;
+  }
+
+  // Commutable area
+  if (COMMUTABLE_AREAS.some((c) => normalized.includes(c) || c.includes(normalized))) {
+    return 12;
+  }
+
+  // Some area specified but not matching
+  return 5;
 }
 
 function scoreUrgency(timing: string): number {

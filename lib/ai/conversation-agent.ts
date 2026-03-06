@@ -3,7 +3,7 @@ import type { GeneratedContent, Profile, Store } from "@/types/database";
 import type { ConversationMessage, AIConversationResponse } from "@/types/conversation";
 
 const anthropic = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 interface ConversationContext {

@@ -7,7 +7,7 @@ import type { TargetingAttributes } from "@/types/ads";
 import type { TargetProfile } from "@/types/targets";
 
 const anthropic = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 const SYSTEM_PROMPT = `You are an AI marketing analyst for a Japanese staffing company (Dr.Stretch / Wecle fitness brands).

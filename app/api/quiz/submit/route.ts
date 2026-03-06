@@ -4,6 +4,7 @@ import { scoreCandidate } from "@/lib/ai/scoring";
 import { scoreCandidateDynamic } from "@/lib/ai/dynamic-scoring";
 import { getScoringWeights } from "@/lib/actions/scoring-profiles";
 import { runAutoTicketWorkflow } from "@/lib/tickets/auto-workflow";
+import { trackFunnelEvent } from "@/lib/tracking/funnel";
 import type { QuizResultResponse } from "@/types/dto";
 
 interface QuizSubmitBody {
@@ -124,6 +125,18 @@ export async function POST(request: NextRequest) {
       event: "quiz_completed",
       metadata: { score: scoreResult.score, factors: scoreResult.factors },
     });
+
+    // Track funnel event (quiz_complete)
+    trackFunnelEvent({
+      org_id: org.id,
+      funnel_step: "quiz_complete",
+      entry_source: body.utm_source || "direct",
+      referral_platform: body.utm_medium || undefined,
+      candidate_id: candidate.id,
+      metadata: { score: scoreResult.score, campaign_id: body.campaign_id },
+    }).catch((err) =>
+      console.error("Funnel tracking error:", err)
+    );
 
     // Trigger auto-ticket workflow (non-blocking)
     runAutoTicketWorkflow(candidate.id).catch((err) =>

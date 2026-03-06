@@ -6,7 +6,7 @@ import type {
 } from "@/types/targets";
 
 const anthropic = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 const SYSTEM_PROMPT = `You are an AI recruitment profile analyzer for a Japanese staffing company (Dr.Stretch / Wecle brands).

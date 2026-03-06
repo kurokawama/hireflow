@@ -3,7 +3,7 @@ import type { TargetList, TargetProfile } from "@/types/targets";
 import type { AIStrategyResponse, CalendarEntry } from "@/types/strategy";
 
 const anthropic = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 interface StrategyContext {

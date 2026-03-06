@@ -4,7 +4,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { ShootingGuide } from "@/types/video";
 
 const anthropic = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 interface ScriptInput {
