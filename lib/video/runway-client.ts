@@ -12,7 +12,6 @@ export async function submitRunwayJob(
 
   if (!apiKey) {
     // Mock mode
-    console.log("[Runway] Mock mode — no API key configured");
     return {
       job_id: `mock_runway_${Date.now()}`,
       status: "completed",

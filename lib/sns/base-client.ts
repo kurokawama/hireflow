@@ -46,12 +46,6 @@ export class MockSNSClient extends BaseSNSClient {
     // Simulate a successful post with a mock ID
     const mockId = `mock_${this.platform}_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
-    console.log(`[MockSNSClient] ${this.platform} post simulated:`, {
-      text_length: content.text.length,
-      media_count: content.media_urls?.length ?? 0,
-      mock_id: mockId,
-    });
-
     return {
       success: true,
       external_post_id: mockId,

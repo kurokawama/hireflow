@@ -29,7 +29,6 @@ export async function submitEditJob(request: FFmpegJobRequest): Promise<{
 }> {
   if (!N8N_WEBHOOK_URL) {
     // Mock mode: simulate job submission
-    console.log("[FFmpeg] Mock mode — n8n webhook URL not configured");
     const mockJobId = `mock_ffmpeg_${Date.now()}`;
 
     return {

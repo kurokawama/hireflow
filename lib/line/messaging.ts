@@ -19,7 +19,6 @@ export async function sendMessage(
   const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
 
   if (!token) {
-    console.log("[LINE] Mock mode — no token configured");
     return { success: true };
   }
 
@@ -78,7 +77,6 @@ export async function sendMulticast(
   const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
 
   if (!token) {
-    console.log("[LINE] Mock mode — no token configured (multicast)");
     return { success: true, sent_count: userIds.length };
   }
 
@@ -129,7 +127,6 @@ export async function sendBroadcast(
   const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
 
   if (!token) {
-    console.log("[LINE] Mock mode — no token configured (broadcast)");
     return { success: true };
   }
 
