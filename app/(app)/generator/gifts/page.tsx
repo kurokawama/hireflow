@@ -168,7 +168,7 @@ export default function GeneratorGiftsPage() {
 
   return (
     <div className="space-y-6 bg-neutral-50">
-      <h1 className="text-2xl font-bold text-neutral-900">Gift code management</h1>
+      <h1 className="text-2xl font-bold text-neutral-900">ギフトコード管理</h1>
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       {isLoading ? (
@@ -183,7 +183,7 @@ export default function GeneratorGiftsPage() {
               <form className="space-y-4" onSubmit={(e) => void handleSaveSettings(e)}>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="gift-type">gift_type</Label>
+                    <Label htmlFor="gift-type">ギフトタイプ</Label>
                     <Select value={giftType} onValueChange={setGiftType}>
                       <SelectTrigger id="gift-type">
                         <SelectValue />
@@ -195,7 +195,7 @@ export default function GeneratorGiftsPage() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="score-threshold">score_threshold</Label>
+                    <Label htmlFor="score-threshold">スコア閾値</Label>
                     <Input
                       id="score-threshold"
                       type="number"
@@ -206,14 +206,14 @@ export default function GeneratorGiftsPage() {
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="flex items-center justify-between rounded-md border border-neutral-200 px-3 py-2">
-                    <span className="text-sm text-neutral-600">auto_distribute</span>
+                    <span className="text-sm text-neutral-600">自動配布</span>
                     <SwitchButton
                       active={autoDistribute}
                       onToggle={() => setAutoDistribute((prev) => !prev)}
                     />
                   </div>
                   <div className="flex items-center justify-between rounded-md border border-neutral-200 px-3 py-2">
-                    <span className="text-sm text-neutral-600">is_active</span>
+                    <span className="text-sm text-neutral-600">有効</span>
                     <SwitchButton active={isActive} onToggle={() => setIsActive((prev) => !prev)} />
                   </div>
                 </div>
@@ -222,7 +222,7 @@ export default function GeneratorGiftsPage() {
                   disabled={isSubmitting}
                   className="bg-[#1D3557] text-white hover:bg-[#122540]"
                 >
-                  {isSubmitting ? "Saving..." : "Save"}
+                  {isSubmitting ? "保存中..." : "保存"}
                 </Button>
               </form>
 
@@ -230,19 +230,19 @@ export default function GeneratorGiftsPage() {
 
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="rounded-md border border-neutral-200 bg-neutral-50 p-3">
-                  <p className="text-xs text-neutral-600">total</p>
+                  <p className="text-xs text-neutral-600">合計</p>
                   <p className="text-lg font-semibold text-neutral-900">{stats.total}</p>
                 </div>
                 <div className="rounded-md border border-neutral-200 bg-neutral-50 p-3">
-                  <p className="text-xs text-neutral-600">available</p>
+                  <p className="text-xs text-neutral-600">利用可能</p>
                   <p className="text-lg font-semibold text-neutral-900">{stats.available}</p>
                 </div>
                 <div className="rounded-md border border-neutral-200 bg-neutral-50 p-3">
-                  <p className="text-xs text-neutral-600">distributed</p>
+                  <p className="text-xs text-neutral-600">配布済み</p>
                   <p className="text-lg font-semibold text-neutral-900">{stats.distributed}</p>
                 </div>
                 <div className="rounded-md border border-neutral-200 bg-neutral-50 p-3">
-                  <p className="text-xs text-neutral-600">expired</p>
+                  <p className="text-xs text-neutral-600">期限切れ</p>
                   <p className="text-lg font-semibold text-neutral-900">{stats.expired}</p>
                 </div>
               </div>
@@ -251,12 +251,12 @@ export default function GeneratorGiftsPage() {
 
           <Card className="rounded-md border border-neutral-200 bg-white">
             <CardHeader>
-              <CardTitle className="text-neutral-900">CSV import</CardTitle>
+              <CardTitle className="text-neutral-900">CSVインポート</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-2 text-sm font-medium text-neutral-900">
                 <Gift className="h-4 w-4" />
-                <span>Upload gift codes</span>
+                <span>ギフトコードをアップロード</span>
               </div>
               <input
                 type="file"
@@ -273,23 +273,23 @@ export default function GeneratorGiftsPage() {
                 className="bg-[#1D3557] text-white hover:bg-[#122540]"
               >
                 <Upload className="mr-2 h-4 w-4" />
-                {isImporting ? "Importing..." : "Import"}
+                {isImporting ? "インポート中..." : "インポート"}
               </Button>
             </CardContent>
           </Card>
 
           <Card className="rounded-md border border-neutral-200 bg-white">
             <CardHeader>
-              <CardTitle className="text-neutral-900">Gift codes</CardTitle>
+              <CardTitle className="text-neutral-900">ギフトコード一覧</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow className="border-neutral-200">
-                    <TableHead>code</TableHead>
-                    <TableHead>type</TableHead>
-                    <TableHead>amount</TableHead>
-                    <TableHead>status</TableHead>
+                    <TableHead>コード</TableHead>
+                    <TableHead>タイプ</TableHead>
+                    <TableHead>金額</TableHead>
+                    <TableHead>ステータス</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -317,18 +317,18 @@ export default function GeneratorGiftsPage() {
 
           <Card className="rounded-md border border-neutral-200 bg-white">
             <CardHeader>
-              <CardTitle className="text-neutral-900">Distribution history</CardTitle>
+              <CardTitle className="text-neutral-900">配布履歴</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow className="border-neutral-200">
-                    <TableHead>candidate</TableHead>
-                    <TableHead>code</TableHead>
-                    <TableHead>type</TableHead>
-                    <TableHead>via</TableHead>
-                    <TableHead>line_sent</TableHead>
-                    <TableHead>distributed_at</TableHead>
+                    <TableHead>候補者</TableHead>
+                    <TableHead>ギフトコード</TableHead>
+                    <TableHead>タイプ</TableHead>
+                    <TableHead>配布方法</TableHead>
+                    <TableHead>LINE送信済み</TableHead>
+                    <TableHead>配布日時</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

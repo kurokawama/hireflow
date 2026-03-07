@@ -97,7 +97,7 @@ export default async function LibraryDetailPage({ params }: LibraryDetailPagePro
       <div className="space-y-6">
         <h1 className="text-3xl font-bold text-neutral-900">ライブラリ</h1>
         <Card className="rounded-md shadow-sm">
-          <CardContent className="pt-6">Not found</CardContent>
+          <CardContent className="pt-6">該当データがありません</CardContent>
         </Card>
       </div>
     );
@@ -114,7 +114,7 @@ export default async function LibraryDetailPage({ params }: LibraryDetailPagePro
 
       <Card className="rounded-md shadow-sm">
         <CardHeader>
-          <CardTitle>Body</CardTitle>
+          <CardTitle>本文</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <form action={updateBodyAction} className="space-y-3">
@@ -126,7 +126,7 @@ export default async function LibraryDetailPage({ params }: LibraryDetailPagePro
             />
             {canEdit && (
               <Button type="submit" variant="outline">
-                Save
+                保存
               </Button>
             )}
           </form>
@@ -135,25 +135,25 @@ export default async function LibraryDetailPage({ params }: LibraryDetailPagePro
             <form action={updateStatusAction}>
               <input type="hidden" name="status" value="review" />
               <Button type="submit" disabled={!canEdit} className="bg-[#1D3557] hover:bg-[#14253d]">
-                Submit for Review
+                レビュー申請
               </Button>
             </form>
             <form action={updateStatusAction}>
               <input type="hidden" name="status" value="approved" />
               <Button type="submit" disabled={!canEdit} className="bg-[#1D3557] hover:bg-[#14253d]">
-                Approve
+                承認
               </Button>
             </form>
             {contentStatus !== "approved" && (
               <form action={updateStatusAction}>
                 <input type="hidden" name="status" value="approved" />
                 <Button type="submit" disabled={!canEdit} className="bg-[#1D3557] hover:bg-[#14253d]">
-                  承認
+                  承認済みにする
                 </Button>
               </form>
             )}
             <Button type="button" variant="outline" data-copy-text={content.body_text}>
-              Copy
+              コピー
             </Button>
             <Button asChild type="button" variant="outline">
               <Link href={`/library/${params.id}/conversation`}>AIと相談</Link>
@@ -161,15 +161,15 @@ export default async function LibraryDetailPage({ params }: LibraryDetailPagePro
             <form action={updateStatusAction}>
               <input type="hidden" name="status" value="posted" />
               <Button type="submit" disabled={!canEdit} className="bg-[#1D3557] hover:bg-[#14253d]">
-                Mark as Posted
+                投稿済みにする
               </Button>
             </form>
           </div>
 
           <div className="rounded-md border bg-neutral-50 p-3 text-sm">
-            <p className="font-medium">Apply Link</p>
+            <p className="font-medium">応募リンク</p>
             <p className="break-all">{applyLinkUrl}</p>
-            <p className="text-neutral-600">Clicks: {totalClicks}</p>
+            <p className="text-neutral-600">クリック数: {totalClicks}</p>
           </div>
         </CardContent>
       </Card>

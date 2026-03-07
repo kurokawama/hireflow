@@ -114,7 +114,7 @@ export function QuizCampaignPanel({ selectedId, onSelectCampaign }: QuizCampaign
   return (
     <Card className="rounded-md border border-neutral-200 bg-white">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 gap-4">
-        <CardTitle className="text-neutral-900">Campaign</CardTitle>
+        <CardTitle className="text-neutral-900">キャンペーン</CardTitle>
         <Dialog
           open={isDialogOpen}
           onOpenChange={(open) => {
@@ -136,7 +136,7 @@ export function QuizCampaignPanel({ selectedId, onSelectCampaign }: QuizCampaign
             </DialogHeader>
             <form className="space-y-4" onSubmit={(e) => void handleSubmit(e)}>
               <div className="space-y-2">
-                <Label htmlFor="campaign-name">name</Label>
+                <Label htmlFor="campaign-name">名前</Label>
                 <Input
                   id="campaign-name"
                   value={form.name}
@@ -145,7 +145,7 @@ export function QuizCampaignPanel({ selectedId, onSelectCampaign }: QuizCampaign
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="campaign-slug">slug</Label>
+                <Label htmlFor="campaign-slug">スラッグ</Label>
                 <Input
                   id="campaign-slug"
                   value={form.slug}
@@ -154,7 +154,7 @@ export function QuizCampaignPanel({ selectedId, onSelectCampaign }: QuizCampaign
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="campaign-brand">brand</Label>
+                <Label htmlFor="campaign-brand">ブランド</Label>
                 <Select
                   value={form.brand}
                   onValueChange={(value: QuizCampaign["brand"]) =>
@@ -172,7 +172,7 @@ export function QuizCampaignPanel({ selectedId, onSelectCampaign }: QuizCampaign
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="campaign-description">description</Label>
+                <Label htmlFor="campaign-description">説明</Label>
                 <Textarea
                   id="campaign-description"
                   value={form.description}
@@ -185,7 +185,7 @@ export function QuizCampaignPanel({ selectedId, onSelectCampaign }: QuizCampaign
                 disabled={isSubmitting}
                 className="w-full bg-[#1D3557] text-white hover:bg-[#122540]"
               >
-                {isSubmitting ? "Submitting..." : "新規キャンペーン"}
+                {isSubmitting ? "送信中..." : "新規キャンペーン"}
               </Button>
             </form>
           </DialogContent>
@@ -200,10 +200,10 @@ export function QuizCampaignPanel({ selectedId, onSelectCampaign }: QuizCampaign
           <Table>
             <TableHeader>
               <TableRow className="border-neutral-200">
-                <TableHead>name</TableHead>
-                <TableHead>slug</TableHead>
-                <TableHead>brand</TableHead>
-                <TableHead className="w-[220px]">action</TableHead>
+                <TableHead>名前</TableHead>
+                <TableHead>スラッグ</TableHead>
+                <TableHead>ブランド</TableHead>
+                <TableHead className="w-[220px]">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
