@@ -165,7 +165,7 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
     ? mockRows
     : (contentsResult.data || []).map((item) => ({
         id: item.id,
-        store_name: storeMap.get(item.store_id) || "Unknown",
+        store_name: storeMap.get(item.store_id) || "不明",
         platform: item.platform,
         template_type: item.template_type,
         status: item.status,
@@ -179,7 +179,7 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-neutral-900">ライブラリ</h1>
         <Button asChild variant="outline">
-          <Link href="/library">Reset</Link>
+          <Link href="/library">リセット</Link>
         </Button>
       </div>
 
@@ -191,7 +191,7 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
           <div className="grid gap-3 md:grid-cols-4">
             <Select defaultValue={storeFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Store" />
+                <SelectValue placeholder="店舗" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">全て</SelectItem>
@@ -205,7 +205,7 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
 
             <Select defaultValue={statusFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder="ステータス" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">全て</SelectItem>
@@ -219,7 +219,7 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
 
             <Select defaultValue={platformFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Platform" />
+                <SelectValue placeholder="プラットフォーム" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">全て</SelectItem>
@@ -236,7 +236,7 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
 
             <Select defaultValue={templateFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Template" />
+                <SelectValue placeholder="テンプレート" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">全て</SelectItem>
@@ -254,13 +254,13 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Store</TableHead>
-                <TableHead>Platform</TableHead>
-                <TableHead>Template</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Body</TableHead>
-                <TableHead className="text-right">Clicks</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead>店舗</TableHead>
+                <TableHead>プラットフォーム</TableHead>
+                <TableHead>テンプレート</TableHead>
+                <TableHead>ステータス</TableHead>
+                <TableHead>本文</TableHead>
+                <TableHead className="text-right">クリック数</TableHead>
+                <TableHead>日付</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

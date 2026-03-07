@@ -71,7 +71,7 @@ export default async function CandidateDetailPage({ params }: CandidateDetailPag
       <div className="space-y-6">
         <h1 className="text-3xl font-bold text-neutral-900">候補者プール</h1>
         <Card className="rounded-md shadow-sm">
-          <CardContent className="pt-6">Not found</CardContent>
+          <CardContent className="pt-6">該当データがありません</CardContent>
         </Card>
       </div>
     );
@@ -91,29 +91,29 @@ export default async function CandidateDetailPage({ params }: CandidateDetailPag
 
       <Card className="rounded-md shadow-sm">
         <CardHeader>
-          <CardTitle>Candidate</CardTitle>
+          <CardTitle>候補者詳細</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="grid gap-3 md:grid-cols-2">
             <p>
-              <span className="font-medium">name:</span> {candidate.name || "-"}
+              <span className="font-medium">名前:</span> {candidate.name || "-"}
             </p>
             <p>
-              <span className="font-medium">email:</span> {candidate.email || "-"}
+              <span className="font-medium">メール:</span> {candidate.email || "-"}
             </p>
             <p>
-              <span className="font-medium">phone:</span> {candidate.phone || "-"}
+              <span className="font-medium">電話:</span> {candidate.phone || "-"}
             </p>
             <p>
-              <span className="font-medium">line_id:</span> {candidate.line_user_id || "-"}
+              <span className="font-medium">LINE ID:</span> {candidate.line_user_id || "-"}
             </p>
             <p className="md:col-span-2">
-              <span className="font-medium">source_channel:</span> {candidate.source_channel}
+              <span className="font-medium">流入経路:</span> {candidate.source_channel}
             </p>
           </div>
           <Separator />
           <div className="flex flex-wrap gap-2">
-            <Badge className={getScoreClass(candidate.ai_score)}>score {candidate.ai_score}</Badge>
+            <Badge className={getScoreClass(candidate.ai_score)}>スコア {candidate.ai_score}</Badge>
             <Badge className={stageColorMap[candidateStage]}>{candidateStage}</Badge>
           </div>
         </CardContent>
@@ -121,7 +121,7 @@ export default async function CandidateDetailPage({ params }: CandidateDetailPag
 
       <Card className="rounded-md shadow-sm">
         <CardHeader>
-          <CardTitle>Quiz Answers</CardTitle>
+          <CardTitle>クイズ回答</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2 text-sm">
@@ -138,7 +138,7 @@ export default async function CandidateDetailPage({ params }: CandidateDetailPag
 
       <Card className="rounded-md shadow-sm">
         <CardHeader>
-          <CardTitle>Score Factors</CardTitle>
+          <CardTitle>スコア要素</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2 text-sm">
@@ -155,7 +155,7 @@ export default async function CandidateDetailPage({ params }: CandidateDetailPag
 
       <Card className="rounded-md shadow-sm">
         <CardHeader>
-          <CardTitle>Stage Timeline</CardTitle>
+          <CardTitle>ステージ遷移</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
@@ -181,7 +181,7 @@ export default async function CandidateDetailPage({ params }: CandidateDetailPag
         <CardContent>
           <form action={updateNotesAction} className="space-y-3">
             <Textarea name="notes" defaultValue={candidate.notes || ""} className="min-h-[140px]" />
-            <Button type="submit">Update</Button>
+            <Button type="submit">更新</Button>
           </form>
         </CardContent>
       </Card>

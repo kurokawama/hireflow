@@ -123,7 +123,7 @@ export default async function CandidatesPage() {
                 <TableRow key={row.id} className="cursor-pointer">
                   <TableCell className="font-medium">
                     <Link href={`/candidates/${row.id}`} className="hover:underline">
-                      {row.name || "Unknown"}
+                      {row.name || "不明"}
                     </Link>
                   </TableCell>
                   <TableCell>{row.source_channel}</TableCell>

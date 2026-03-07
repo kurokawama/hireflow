@@ -95,11 +95,11 @@ export function LineDeliveryPanel({ campaignId }: LineDeliveryPanelProps) {
   const handleSend = async () => {
     setError("");
     if (!message.trim()) {
-      setError("Message is required.");
+      setError("メッセージを入力してください。");
       return;
     }
     if (selectedLineUserIds.length === 0) {
-      setError("Recipient is required.");
+      setError("送信先を選択してください。");
       return;
     }
 
@@ -112,13 +112,13 @@ export function LineDeliveryPanel({ campaignId }: LineDeliveryPanelProps) {
         include_quiz_url: includeQuizUrl,
       });
       if (!result.success) {
-        setError(result.error || "Failed to send message.");
+        setError(result.error || "送信に失敗しました。");
         return;
       }
       setSelectedLineUserIds([]);
       await loadLogs();
     } catch (sendError) {
-      setError(sendError instanceof Error ? sendError.message : "Failed to send message.");
+      setError(sendError instanceof Error ? sendError.message : "送信に失敗しました。");
     } finally {
       setIsSubmitting(false);
     }
@@ -131,7 +131,7 @@ export function LineDeliveryPanel({ campaignId }: LineDeliveryPanelProps) {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="line-min-score">min score</Label>
+          <Label htmlFor="line-min-score">最低スコア</Label>
           <Input
             id="line-min-score"
             type="number"
@@ -160,9 +160,9 @@ export function LineDeliveryPanel({ campaignId }: LineDeliveryPanelProps) {
                       }}
                     />
                   </TableHead>
-                  <TableHead>name</TableHead>
-                  <TableHead>score</TableHead>
-                  <TableHead>stage</TableHead>
+                  <TableHead>名前</TableHead>
+                  <TableHead>スコア</TableHead>
+                  <TableHead>ステージ</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -193,7 +193,7 @@ export function LineDeliveryPanel({ campaignId }: LineDeliveryPanelProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="line-message">message</Label>
+          <Label htmlFor="line-message">メッセージ</Label>
           <Textarea
             id="line-message"
             value={message}
@@ -222,7 +222,7 @@ export function LineDeliveryPanel({ campaignId }: LineDeliveryPanelProps) {
           {isSubmitting ? (
             <span className="inline-flex items-center gap-2">
               <Check className="h-4 w-4" />
-              Sending...
+              送信中...
             </span>
           ) : (
             <span className="inline-flex items-center gap-2">
@@ -233,16 +233,16 @@ export function LineDeliveryPanel({ campaignId }: LineDeliveryPanelProps) {
         </Button>
 
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-neutral-900">delivery logs</h3>
+          <h3 className="text-sm font-semibold text-neutral-900">配信ログ</h3>
           {isLoadingLogs ? (
             <div className="animate-pulse rounded-md bg-neutral-100 h-8" />
           ) : (
             <Table>
               <TableHeader>
                 <TableRow className="border-neutral-200">
-                  <TableHead>sent_at</TableHead>
-                  <TableHead>recipient_count</TableHead>
-                  <TableHead>status</TableHead>
+                  <TableHead>送信日時</TableHead>
+                  <TableHead>送信数</TableHead>
+                  <TableHead>ステータス</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
