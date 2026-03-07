@@ -55,7 +55,7 @@ export default function NewVideoProjectPage() {
           title,
           platform,
           target_audience: targetPersona,
-          brand: "HireFlow",
+          brand: "NOBITEL",
           key_messages: [keyMessage, `スタイル: ${style}`],
           duration_seconds: duration,
           generate_script: true,

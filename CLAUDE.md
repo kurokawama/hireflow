@@ -1,7 +1,7 @@
-# HireFlow — AI Recruitment Engine
+# NobitelSNSアドシステム — AI Recruitment Engine
 
 ## Overview
-Dr. Stretch / Wecle brands internal AI recruitment tool.
+Dr. Stretch / Wecle brands internal SNS ad & AI recruitment system (旧称: HireFlow).
 Hunt (paid SNS ads) x Fish (organic trainer posts) x Nurture (diagnostic quiz + candidate pool).
 
 ## Tech Stack

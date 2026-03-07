@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "のびてる スカウティングツール",
-  description: "株式会社のびてる（NOBITEL）AI採用エンジン — Dr. Stretch / Wecle",
+  title: "NobitelSNSアドシステム",
+  description: "株式会社のびてる（NOBITEL）SNS広告・採用自動化システム — Dr. Stretch / Wecle",
 };
 
 export default function RootLayout({

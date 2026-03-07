@@ -5,6 +5,7 @@ import { scoreCandidateDynamic } from "@/lib/ai/dynamic-scoring";
 import { getScoringWeights } from "@/lib/actions/scoring-profiles";
 import { runAutoTicketWorkflow } from "@/lib/tickets/auto-workflow";
 import { trackFunnelEvent } from "@/lib/tracking/funnel";
+import { distributeGiftToCandidate } from "@/lib/actions/gifts";
 import type { QuizResultResponse } from "@/types/dto";
 
 interface QuizSubmitBody {
@@ -141,6 +142,11 @@ export async function POST(request: NextRequest) {
     // Trigger auto-ticket workflow (non-blocking)
     runAutoTicketWorkflow(candidate.id).catch((err) =>
       console.error("Auto-ticket workflow error:", err)
+    );
+
+    // Trigger auto-gift distribution (non-blocking)
+    distributeGiftToCandidate(candidate.id, body.campaign_id || undefined).catch(
+      (err) => console.error("Gift distribution error:", err)
     );
 
     const response: QuizResultResponse = {
