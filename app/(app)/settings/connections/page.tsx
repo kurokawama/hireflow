@@ -40,14 +40,14 @@ export default function SettingsConnectionsPage() {
       });
       const payload = (await response.json()) as { data?: SNSConnection[]; error?: string };
       if (!response.ok || !payload.data) {
-        setError(payload.error || "Failed to load SNS connections.");
+        setError(payload.error || "SNS接続の読み込みに失敗しました。");
         setConnections([]);
         setIsLoading(false);
         return;
       }
       setConnections(payload.data);
     } catch {
-      setError("Failed to load SNS connections.");
+      setError("SNS接続の読み込みに失敗しました。");
       setConnections([]);
     } finally {
       setIsLoading(false);
@@ -88,13 +88,13 @@ export default function SettingsConnectionsPage() {
       });
       const payload = (await response.json()) as { error?: string };
       if (!response.ok) {
-        setError(payload.error || "Failed to disconnect.");
+        setError(payload.error || "SNS接続の解除に失敗しました。");
         setActingPlatform(null);
         return;
       }
       await loadConnections();
     } catch {
-      setError("Failed to disconnect.");
+      setError("SNS接続の解除に失敗しました。");
     } finally {
       setActingPlatform(null);
     }

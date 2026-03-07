@@ -160,7 +160,7 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-neutral-900">ダッシュボード</h1>
-        {hasSupabaseError && <Badge variant="outline">Mock</Badge>}
+        {hasSupabaseError && <Badge variant="outline">モック</Badge>}
       </div>
 
       <Card className="rounded-md shadow-sm">

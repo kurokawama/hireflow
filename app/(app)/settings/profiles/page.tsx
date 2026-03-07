@@ -380,7 +380,7 @@ export default function SettingsProfilesPage() {
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      {loading && <p className="text-sm text-neutral-500">Loading...</p>}
+      {loading && <p className="text-sm text-neutral-500">読み込み中...</p>}
 
       {!loading && (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -394,7 +394,7 @@ export default function SettingsProfilesPage() {
                   </div>
                   {profile.is_default && (
                     <Badge className="border-transparent bg-[#1D3557] text-white">
-                      DEFAULT
+                      デフォルト
                     </Badge>
                   )}
                 </div>
@@ -425,7 +425,7 @@ export default function SettingsProfilesPage() {
                     size="sm"
                     onClick={() => openEdit(profile)}
                   >
-                    Edit
+                    編集
                   </Button>
                 </div>
               </CardContent>
@@ -435,7 +435,7 @@ export default function SettingsProfilesPage() {
           {profiles.length === 0 && (
             <Card className="rounded-md bg-white shadow-sm">
               <CardContent className="pt-6 text-sm text-neutral-500">
-                No profiles
+                プロフィールがありません
               </CardContent>
             </Card>
           )}
@@ -452,7 +452,7 @@ export default function SettingsProfilesPage() {
       >
         <DialogContent className="max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Edit</DialogTitle>
+            <DialogTitle>プロフィール編集</DialogTitle>
           </DialogHeader>
           <form className="space-y-4" onSubmit={handleUpdate}>
             <div className="space-y-2">
@@ -565,7 +565,7 @@ export default function SettingsProfilesPage() {
               className="w-full bg-[#E63946] hover:bg-[#C62F3B]"
               disabled={saving}
             >
-              Edit
+              編集
             </Button>
           </form>
         </DialogContent>

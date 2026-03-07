@@ -62,6 +62,12 @@ function consentBadgeClass(status: StaffVoice["consent_status"]) {
   return "border-transparent bg-yellow-100 text-yellow-700";
 }
 
+const consentStatusLabelMap: Record<StaffVoice["consent_status"], string> = {
+  pending: "保留",
+  approved: "承認済み",
+  revoked: "取消済み",
+};
+
 const parseCommaText = (value: string) =>
   value
     .split(",")
@@ -179,7 +185,7 @@ export default function SettingsVoicesPage() {
 
     const targetOrgId = await resolveOrgId();
     if (!targetOrgId) {
-      setError("Organization ID is missing.");
+      setError("組織IDが見つかりません。");
       setSaving(false);
       return;
     }
@@ -346,7 +352,7 @@ export default function SettingsVoicesPage() {
       </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
-      {loading && <p className="text-sm text-neutral-500">Loading...</p>}
+      {loading && <p className="text-sm text-neutral-500">読み込み中...</p>}
 
       {!loading && (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -370,7 +376,7 @@ export default function SettingsVoicesPage() {
                       </p>
                     </div>
                     <Badge className={consentBadgeClass(voice.consent_status)}>
-                      {voice.consent_status}
+                      {consentStatusLabelMap[voice.consent_status] ?? voice.consent_status}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -420,7 +426,7 @@ export default function SettingsVoicesPage() {
           {voices.length === 0 && (
             <Card className="rounded-md bg-white shadow-sm">
               <CardContent className="pt-6 text-sm text-neutral-500">
-                No staff voices
+                スタッフボイスがありません
               </CardContent>
             </Card>
           )}
