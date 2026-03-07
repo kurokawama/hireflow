@@ -331,7 +331,7 @@ export default function SettingsMembersPage() {
               <TableHead>役割</TableHead>
               <TableHead>所属店舗</TableHead>
               <TableHead>有効</TableHead>
-              <TableHead className="w-[120px]">Actions</TableHead>
+              <TableHead className="w-[120px]">操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -364,7 +364,7 @@ export default function SettingsMembersPage() {
                       size="sm"
                       onClick={() => void handleToggleActive(member)}
                     >
-                      Toggle
+                      切替
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -372,14 +372,14 @@ export default function SettingsMembersPage() {
             {!loading && members.length === 0 && (
               <TableRow>
                 <TableCell colSpan={6} className="text-center text-neutral-500">
-                  No members
+                  メンバーがいません
                 </TableCell>
               </TableRow>
             )}
             {loading && (
               <TableRow>
                 <TableCell colSpan={6} className="text-center text-neutral-500">
-                  Loading...
+                  読み込み中...
                 </TableCell>
               </TableRow>
             )}

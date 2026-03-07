@@ -36,6 +36,12 @@ function formatCurrency(value: number) {
 export default async function AnalyticsPage() {
   const supabase = await createClient();
   const monthStart = getMonthStartIso();
+  const channelLabelMap: Record<string, string> = {
+    organic: "オーガニック",
+    meta_ad: "Meta広告",
+    line: "LINE",
+    direct: "ダイレクト",
+  };
 
   const [
     generationCountResult,
@@ -247,17 +253,17 @@ export default async function AnalyticsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Channel</TableHead>
-                <TableHead className="text-right">Clicks</TableHead>
-                <TableHead className="text-right">Applications</TableHead>
+                <TableHead>チャネル</TableHead>
+                <TableHead className="text-right">クリック数</TableHead>
+                <TableHead className="text-right">応募数</TableHead>
                 <TableHead className="text-right">コスト</TableHead>
-                <TableHead className="text-right">Cost-per-hire</TableHead>
+                <TableHead className="text-right">採用単価</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {channelStats.map((row) => (
                 <TableRow key={row.channel}>
-                  <TableCell className="font-medium">{row.channel}</TableCell>
+                  <TableCell className="font-medium">{channelLabelMap[row.channel] ?? row.channel}</TableCell>
                   <TableCell className="text-right">{row.clicks}</TableCell>
                   <TableCell className="text-right">{row.applications}</TableCell>
                   <TableCell className="text-right">{formatCurrency(row.cost)}</TableCell>
@@ -279,9 +285,9 @@ export default async function AnalyticsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Stage</TableHead>
-                <TableHead className="text-right">Count</TableHead>
-                <TableHead className="text-right">Conversion rate</TableHead>
+                <TableHead>ステージ</TableHead>
+                <TableHead className="text-right">件数</TableHead>
+                <TableHead className="text-right">転換率</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -305,10 +311,10 @@ export default async function AnalyticsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Store</TableHead>
-                <TableHead className="text-right">Generations</TableHead>
-                <TableHead className="text-right">Clicks</TableHead>
-                <TableHead className="text-right">Applications</TableHead>
+                <TableHead>店舗</TableHead>
+                <TableHead className="text-right">生成数</TableHead>
+                <TableHead className="text-right">クリック数</TableHead>
+                <TableHead className="text-right">応募数</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

@@ -29,13 +29,13 @@ type GeneratePlatform = Extract<
 type GeneratedResult = GenerateResponse["contents"][number];
 
 const FALLBACK_STORES: StoreOption[] = [
-  { id: "mock-store-1", store_name: "Dr. Stretch Shibuya" },
-  { id: "mock-store-2", store_name: "Wecle Shinjuku" },
+  { id: "mock-store-1", store_name: "Dr.ストレッチ 渋谷店" },
+  { id: "mock-store-2", store_name: "Wecle 新宿店" },
 ];
 
 const FALLBACK_PROFILES: ProfileOption[] = [
-  { id: "mock-profile-1", profile_name: "Default Profile" },
-  { id: "mock-profile-2", profile_name: "Hiring Focus" },
+  { id: "mock-profile-1", profile_name: "デフォルトプロフィール" },
+  { id: "mock-profile-2", profile_name: "採用強化" },
 ];
 
 const TEMPLATE_OPTIONS: TemplateType[] = ["staff_day", "job_intro", "qa"];

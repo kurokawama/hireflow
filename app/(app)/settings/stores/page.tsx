@@ -145,7 +145,7 @@ export default function SettingsStoresPage() {
 
     const targetOrgId = await resolveOrgId();
     if (!targetOrgId) {
-      setError("Organization ID is missing.");
+      setError("組織IDが見つかりません。");
       setSaving(false);
       return;
     }
@@ -213,7 +213,7 @@ export default function SettingsStoresPage() {
   };
 
   const handleDelete = async (storeId: string) => {
-    const isConfirmed = window.confirm("Delete this store?");
+    const isConfirmed = window.confirm("この店舗を削除しますか？");
     if (!isConfirmed) {
       return;
     }
@@ -362,7 +362,7 @@ export default function SettingsStoresPage() {
               <TableHead>ブランド</TableHead>
               <TableHead>所在地</TableHead>
               <TableHead>有効</TableHead>
-              <TableHead className="w-[180px]">Actions</TableHead>
+              <TableHead className="w-[180px]">操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -410,14 +410,14 @@ export default function SettingsStoresPage() {
             {!loading && stores.length === 0 && (
               <TableRow>
                 <TableCell colSpan={5} className="text-center text-neutral-500">
-                  No stores
+                  店舗がありません
                 </TableCell>
               </TableRow>
             )}
             {loading && (
               <TableRow>
                 <TableCell colSpan={5} className="text-center text-neutral-500">
-                  Loading...
+                  読み込み中...
                 </TableCell>
               </TableRow>
             )}
