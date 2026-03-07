@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Check, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -44,7 +44,7 @@ export function LineDeliveryPanel({ campaignId }: LineDeliveryPanelProps) {
     return Number.isFinite(number) ? number : undefined;
   }, [minScore]);
 
-  const loadCandidates = async () => {
+  const loadCandidates = useCallback(async () => {
     setIsLoadingCandidates(true);
     setError("");
     try {
@@ -59,9 +59,9 @@ export function LineDeliveryPanel({ campaignId }: LineDeliveryPanelProps) {
     } finally {
       setIsLoadingCandidates(false);
     }
-  };
+  }, [campaignId, parsedMinScore]);
 
-  const loadLogs = async () => {
+  const loadLogs = useCallback(async () => {
     setIsLoadingLogs(true);
     try {
       const data = await getDeliveryLogs(campaignId, 10);
@@ -71,15 +71,15 @@ export function LineDeliveryPanel({ campaignId }: LineDeliveryPanelProps) {
     } finally {
       setIsLoadingLogs(false);
     }
-  };
+  }, [campaignId]);
 
   useEffect(() => {
     void loadCandidates();
-  }, [campaignId, parsedMinScore]);
+  }, [loadCandidates]);
 
   useEffect(() => {
     void loadLogs();
-  }, [campaignId]);
+  }, [loadLogs]);
 
   const toggleSelect = (lineUserId: string) => {
     setSelectedLineUserIds((prev) => {

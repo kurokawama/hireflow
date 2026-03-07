@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useState } from "react";
 import { Gift, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -77,7 +77,7 @@ export function GiftSettingsPanel({ campaignId }: GiftSettingsPanelProps) {
   const [isImporting, setIsImporting] = useState(false);
   const [error, setError] = useState("");
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     setError("");
     try {
@@ -102,11 +102,11 @@ export function GiftSettingsPanel({ campaignId }: GiftSettingsPanelProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [campaignId]);
 
   useEffect(() => {
     void loadData();
-  }, [campaignId]);
+  }, [loadData]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
