@@ -14,6 +14,9 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { GiftSettingsPanel } from "@/components/generator/gift-settings-panel";
+import { LineDeliveryPanel } from "@/components/generator/line-delivery-panel";
+import { QuizCampaignPanel } from "@/components/generator/quiz-campaign-panel";
 import type { Platform, Profile, Store, TemplateType } from "@/types/database";
 import type { GenerateResponse } from "@/types/dto";
 
@@ -65,6 +68,7 @@ export default function GeneratorPage() {
   const [results, setResults] = useState<GeneratedResult[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
+  const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(null);
 
   useEffect(() => {
     const supabase = createClient();
@@ -153,133 +157,157 @@ export default function GeneratorPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-neutral-900">コンテンツ生成</h1>
+      <Tabs defaultValue="post" className="space-y-6">
+        <TabsList className="bg-neutral-100">
+          <TabsTrigger value="post">投稿文生成</TabsTrigger>
+          <TabsTrigger value="quiz">アンケート作成</TabsTrigger>
+        </TabsList>
+        <TabsContent value="post" className="space-y-6">
+          <h1 className="text-3xl font-bold text-neutral-900">コンテンツ生成</h1>
 
-      <Card className="rounded-md shadow-sm">
-        <CardHeader>
-          <CardTitle>コンテンツ生成</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-5">
-          <div className="grid gap-5 md:grid-cols-3">
-            <div className="space-y-2">
-              <Label>店舗を選択</Label>
-              <Select value={storeId} onValueChange={setStoreId}>
-                <SelectTrigger>
-                  <SelectValue placeholder="店舗を選択" />
-                </SelectTrigger>
-                <SelectContent>
-                  {stores.map((store) => (
-                    <SelectItem key={store.id} value={store.id}>
-                      {store.store_name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <Card className="rounded-md shadow-sm">
+            <CardHeader>
+              <CardTitle>コンテンツ生成</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="grid gap-5 md:grid-cols-3">
+                <div className="space-y-2">
+                  <Label>店舗を選択</Label>
+                  <Select value={storeId} onValueChange={setStoreId}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="店舗を選択" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {stores.map((store) => (
+                        <SelectItem key={store.id} value={store.id}>
+                          {store.store_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-            <div className="space-y-2">
-              <Label>プロフィール</Label>
-              <Select value={profileId} onValueChange={setProfileId}>
-                <SelectTrigger>
-                  <SelectValue placeholder="プロフィール" />
-                </SelectTrigger>
-                <SelectContent>
-                  {profiles.map((profile) => (
-                    <SelectItem key={profile.id} value={profile.id}>
-                      {profile.profile_name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+                <div className="space-y-2">
+                  <Label>プロフィール</Label>
+                  <Select value={profileId} onValueChange={setProfileId}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="プロフィール" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {profiles.map((profile) => (
+                        <SelectItem key={profile.id} value={profile.id}>
+                          {profile.profile_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-            <div className="space-y-2">
-              <Label>テンプレートタイプ</Label>
-              <Select
-                value={templateType}
-                onValueChange={(value) => setTemplateType(value as TemplateType)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="テンプレートタイプ" />
-                </SelectTrigger>
-                <SelectContent>
-                  {TEMPLATE_OPTIONS.map((option) => (
-                    <SelectItem key={option} value={option}>
-                      {option}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+                <div className="space-y-2">
+                  <Label>テンプレートタイプ</Label>
+                  <Select
+                    value={templateType}
+                    onValueChange={(value) => setTemplateType(value as TemplateType)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="テンプレートタイプ" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TEMPLATE_OPTIONS.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
-          <div className="space-y-2">
-            <Label>プラットフォーム</Label>
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-              {PLATFORM_OPTIONS.map((platform) => (
-                <label
-                  key={platform}
-                  className="flex items-center gap-2 rounded-md border bg-white px-3 py-2 text-sm"
-                >
-                  <input
-                    type="checkbox"
-                    checked={platforms.includes(platform)}
-                    onChange={() => togglePlatform(platform)}
-                  />
-                  <span>{PLATFORM_LABELS[platform]}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {error && <p className="text-sm text-red-600">{error}</p>}
-
-          <Button
-            type="button"
-            onClick={handleGenerate}
-            disabled={isGenerating}
-            className="bg-[#E63946] hover:bg-[#C62F3B]"
-          >
-            生成
-          </Button>
-        </CardContent>
-      </Card>
-
-      {results.length > 0 && (
-        <Card className="rounded-md shadow-sm">
-          <CardHeader>
-            <CardTitle>生成結果</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue={defaultTab}>
-              <TabsList>
-                {results.map((result) => (
-                  <TabsTrigger key={result.content_id} value={result.platform}>
-                    {result.platform}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              {results.map((result) => (
-                <TabsContent key={result.content_id} value={result.platform} className="space-y-3">
-                  <Textarea value={result.body_text} readOnly className="min-h-[220px]" />
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => navigator.clipboard.writeText(result.body_text)}
+              <div className="space-y-2">
+                <Label>プラットフォーム</Label>
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                  {PLATFORM_OPTIONS.map((platform) => (
+                    <label
+                      key={platform}
+                      className="flex items-center gap-2 rounded-md border bg-white px-3 py-2 text-sm"
                     >
-                      コピー
-                    </Button>
-                    <code className="rounded bg-neutral-100 px-2 py-1 text-xs">
-                      {result.apply_link}
-                    </code>
-                  </div>
-                </TabsContent>
-              ))}
-            </Tabs>
-          </CardContent>
-        </Card>
-      )}
+                      <input
+                        type="checkbox"
+                        checked={platforms.includes(platform)}
+                        onChange={() => togglePlatform(platform)}
+                      />
+                      <span>{PLATFORM_LABELS[platform]}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {error && <p className="text-sm text-red-600">{error}</p>}
+
+              <Button
+                type="button"
+                onClick={handleGenerate}
+                disabled={isGenerating}
+                className="bg-[#E63946] hover:bg-[#C62F3B]"
+              >
+                生成
+              </Button>
+            </CardContent>
+          </Card>
+
+          {results.length > 0 && (
+            <Card className="rounded-md shadow-sm">
+              <CardHeader>
+                <CardTitle>生成結果</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue={defaultTab}>
+                  <TabsList>
+                    {results.map((result) => (
+                      <TabsTrigger key={result.content_id} value={result.platform}>
+                        {result.platform}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                  {results.map((result) => (
+                    <TabsContent
+                      key={result.content_id}
+                      value={result.platform}
+                      className="space-y-3"
+                    >
+                      <Textarea value={result.body_text} readOnly className="min-h-[220px]" />
+                      <div className="flex flex-wrap items-center gap-3">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => navigator.clipboard.writeText(result.body_text)}
+                        >
+                          コピー
+                        </Button>
+                        <code className="rounded bg-neutral-100 px-2 py-1 text-xs">
+                          {result.apply_link}
+                        </code>
+                      </div>
+                    </TabsContent>
+                  ))}
+                </Tabs>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+        <TabsContent value="quiz" className="space-y-6">
+          <QuizCampaignPanel
+            onSelectCampaign={(id) => setSelectedCampaignId(id)}
+            selectedId={selectedCampaignId}
+          />
+          {selectedCampaignId && (
+            <div className="mt-6 space-y-6">
+              <LineDeliveryPanel campaignId={selectedCampaignId} />
+              <GiftSettingsPanel campaignId={selectedCampaignId} />
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
